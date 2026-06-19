@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community — XyvorraOS</title>
+  <meta name="description" content="Join the XyvorraOS crew. Discord, GitHub Discussions, issue reporting, and the crew code." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+      <div class="nav-logo-icon" aria-hidden="true">X</div>
+      <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="themes.html">Themes</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="community.html">Community</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
+      <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="features.html">Features</a>
+  <a href="themes.html">Themes</a>
+  <a href="download.html">Download</a>
+  <a href="announcements.html">News</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="community.html">Community</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// community</p>
+      <h1 class="reveal">Join the crew.<br><span class="text-accent">The void is better with people.</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary); max-width:540px; margin-top:1rem; font-size:1.05rem;">
+        Whether you're testing, reporting bugs, sharing art, or just watching from the sidelines — it means a lot. Welcome aboard.
+      </p>
+    </div>
+  </section>
+
+  <!-- Community hubs -->
+  <section class="section" style="padding-top:2rem;">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">Where to find us</div>
+      <h2 class="section-title reveal">Pick your channel.</h2>
+
+      <div class="grid-2" style="gap:1.5rem;">
+
+        <!-- Discord -->
+        <div class="card card-glow reveal" style="border-color:rgba(88,101,242,0.3);">
+          <div style="display:flex; align-items:center; gap:0.85rem; margin-bottom:1rem;">
+            <div style="width:48px; height:48px; border-radius:12px; background:rgba(88,101,242,0.2); display:flex; align-items:center; justify-content:center; font-size:1.4rem;" aria-hidden="true">🎮</div>
+            <div>
+              <h3>Discord</h3>
+              <p class="text-muted" style="font-size:0.85rem;">discord.gg/8bYwUNb8ZS</p>
+            </div>
+          </div>
+          <p class="text-muted" style="font-size:0.92rem; line-height:1.7; margin-bottom:1.25rem;">
+            Real-time chat — polls, patch previews, bug chats, fan art, and general space-nerd conversation. If you want to see what's coming next or just want to say something blew up, this is the place.
+          </p>
+          <div style="display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.25rem; font-size:0.88rem;">
+            <div style="color:var(--text-secondary);">💬 #general — hang out</div>
+            <div style="color:var(--text-secondary);">🐛 #bug-reports — something broke</div>
+            <div style="color:var(--text-secondary);">🎨 #gallery — show your setup</div>
+            <div style="color:var(--text-secondary);">📣 #announcements — official updates</div>
+          </div>
+          <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium" target="_blank" rel="noopener">Join Discord ↗</a>
+        </div>
+
+        <!-- GitHub -->
+        <div class="card card-glow reveal reveal-delay-1" style="border-color:rgba(255,255,255,0.12);">
+          <div style="display:flex; align-items:center; gap:0.85rem; margin-bottom:1rem;">
+            <div style="width:48px; height:48px; border-radius:12px; background:rgba(255,255,255,0.07); display:flex; align-items:center; justify-content:center; font-size:1.4rem;" aria-hidden="true">🐙</div>
+            <div>
+              <h3>GitHub</h3>
+              <p class="text-muted" style="font-size:0.85rem;">PixelatedPrelude/XyvorraOS.com</p>
+            </div>
+          </div>
+          <p class="text-muted" style="font-size:0.92rem; line-height:1.7; margin-bottom:1.25rem;">
+            Code, releases, and issue tracking. If something broke, there's a template for that. If you want something added, there's a template for that too. Discussions is there for everything else.
+          </p>
+          <div style="display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.25rem; font-size:0.88rem;">
+            <div><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues" target="_blank" rel="noopener" style="color:var(--text-secondary);">✦ Issues — bug reports &amp; feature requests</a></div>
+            <div><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/discussions" target="_blank" rel="noopener" style="color:var(--text-secondary);">⟳ Discussions — general questions</a></div>
+            <div><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" target="_blank" rel="noopener" style="color:var(--text-secondary);">🚀 Releases — patch notes and downloads</a></div>
+          </div>
+          <a href="https://github.com/PixelatedPrelude/XyvorraOS.com" class="btn btn-outline" target="_blank" rel="noopener">View on GitHub ↗</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Issue templates -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">Reporting</div>
+      <h2 class="section-title reveal">Something broke? Good — tell me.</h2>
+      <p class="section-desc reveal reveal-delay-1">Head to the Issues tab and grab the right template. The more detail the better.</p>
+
+      <div class="grid-3">
+        <div class="card reveal">
+          <div style="font-size:1.5rem; margin-bottom:0.75rem;" aria-hidden="true">✦</div>
+          <h3 style="font-size:1rem;">Bug Report</h3>
+          <p class="text-muted" style="margin-top:0.4rem; font-size:0.88rem; line-height:1.6;">It's broken, here's what happened. Include what you did, what you expected, and what actually exploded.</p>
+          <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues/new?template=bug_report.md" class="btn btn-outline btn-sm" style="margin-top:1rem;" target="_blank" rel="noopener">File bug report ↗</a>
+        </div>
+        <div class="card reveal reveal-delay-1">
+          <div style="font-size:1.5rem; margin-bottom:0.75rem;" aria-hidden="true">⟳</div>
+          <h3 style="font-size:1rem;">Update Feedback</h3>
+          <p class="text-muted" style="margin-top:0.4rem; font-size:0.88rem; line-height:1.6;">You ran <span class="mono" style="color:var(--verdance); font-size:0.82rem;">xyvorra-update</span> and want to share how it went — good or bad. Both are useful.</p>
+          <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues/new?template=update_feedback.md" class="btn btn-outline btn-sm" style="margin-top:1rem;" target="_blank" rel="noopener">Leave feedback ↗</a>
+        </div>
+        <div class="card reveal reveal-delay-2">
+          <div style="font-size:1.5rem; margin-bottom:0.75rem;" aria-hidden="true">✧</div>
+          <h3 style="font-size:1rem;">Feature Request</h3>
+          <p class="text-muted" style="margin-top:0.4rem; font-size:0.88rem; line-height:1.6;">Something you'd love to see added. The roadmap is long and feature requests genuinely help prioritize.</p>
+          <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues/new?template=feature_request.md" class="btn btn-outline btn-sm" style="margin-top:1rem;" target="_blank" rel="noopener">Request a feature ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crew code -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">The rules</div>
+      <h2 class="section-title reveal">Crew Code — the short version.</h2>
+      <p class="section-desc reveal reveal-delay-1">This is a chill project and the community around it should be too. There's only a handful of things that'll get you booted from the airlock.</p>
+
+      <div style="max-width:680px; display:flex; flex-direction:column; gap:0.85rem;">
+
+        <div class="card reveal" style="display:flex; gap:1rem; padding:1rem 1.25rem;">
+          <span style="font-size:1.1rem; flex-shrink:0;" aria-hidden="true">🚫</span>
+          <div>
+            <strong style="font-size:0.95rem;">No politics, religion, racism, or OS-bashing</strong>
+            <p class="text-muted" style="font-size:0.88rem; margin-top:0.2rem;">Zero. Not the place, not the time, not ever.</p>
+          </div>
+        </div>
+
+        <div class="card reveal reveal-delay-1" style="display:flex; gap:1rem; padding:1rem 1.25rem;">
+          <span style="font-size:1.1rem; flex-shrink:0;" aria-hidden="true">🤝</span>
+          <div>
+            <strong style="font-size:0.95rem;">Be decent to each other</strong>
+            <p class="text-muted" style="font-size:0.88rem; margin-top:0.2rem;">Rude comments, personal attacks, being unnecessarily unpleasant — not here.</p>
+          </div>
+        </div>
+
+        <div class="card reveal reveal-delay-2" style="display:flex; gap:1rem; padding:1rem 1.25rem;">
+          <span style="font-size:1.1rem; flex-shrink:0;" aria-hidden="true">✨</span>
+          <div>
+            <strong style="font-size:0.95rem;">Keep it clean</strong>
+            <p class="text-muted" style="font-size:0.88rem; margin-top:0.2rem;">The vibe doesn't fit language or content that doesn't belong in a public space.</p>
+          </div>
+        </div>
+
+        <div class="card reveal reveal-delay-3" style="display:flex; gap:1rem; padding:1rem 1.25rem;">
+          <span style="font-size:1.1rem; flex-shrink:0;" aria-hidden="true">🌌</span>
+          <div>
+            <strong style="font-size:0.95rem;">Don't spiral over internet stuff</strong>
+            <p class="text-muted" style="font-size:0.88rem; margin-top:0.2rem;">Someone said something you disagree with? Scroll past it. Life's too short and the galaxy's too big.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="card reveal" style="margin-top:1.5rem; max-width:680px; background:rgba(4,158,71,0.04); border-color:rgba(4,158,71,0.2); padding:1.25rem;">
+        <p style="font-size:0.93rem; line-height:1.7; color:var(--text-secondary);">
+          The vibe is: <strong style="color:var(--text-primary);">good people, good conversations, good project.</strong> If something bothers you, move on. If something really bothers you, flag it quietly and let me know. That's it. Pretty simple crew code for a pretty simple goal — keep it fun.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:0.75rem; display:inline-flex;">
+          <div class="nav-logo-icon" aria-hidden="true">X</div>
+          <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+        </a>
+        <p>Space-age Linux, built for the fun of it. One person. One distro. Endless space.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="themes.html">Themes</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="community.html">Hub</a></li>
+          <li><a href="announcements.html">Announcements</a></li>
+          <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues" target="_blank" rel="noopener">Issue Tracker ↗</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" target="_blank" rel="noopener">Releases ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/discussions" target="_blank" rel="noopener">Discussions ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Pixelated Prelude · XyvorraOS · Built in the void. Shipped to the stars.</span>
+      <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/animations.js"></script>
+<script src="js/nav.js"></script>
+</body>
+</html>

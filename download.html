@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Download — XyvorraOS</title>
+  <meta name="description" content="Download XyvorraOS — a space-age Arch-based Linux distro. Alpha release available now." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+      <div class="nav-logo-icon" aria-hidden="true">X</div>
+      <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="themes.html">Themes</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="community.html">Community</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
+      <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="features.html">Features</a>
+  <a href="themes.html">Themes</a>
+  <a href="download.html">Download</a>
+  <a href="announcements.html">News</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="community.html">Community</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// download</p>
+      <h1 class="reveal">Clone it. Break it.<br><span class="text-accent">Tell me what's wrong.</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary); max-width:520px; margin-top:1rem; font-size:1.05rem;">
+        That's the whole loop right now — and it's working pretty well. XyvorraOS is in active alpha development. Grab it, test it, and file issues.
+      </p>
+    </div>
+  </section>
+
+  <!-- Alpha warning banner -->
+  <section class="section--sm" style="padding-top:0;">
+    <div class="container">
+      <div style="background:rgba(101,0,11,0.15); border:1px solid rgba(101,0,11,0.35); border-radius:var(--radius-md); padding:1rem 1.25rem; display:flex; align-items:flex-start; gap:0.85rem;">
+        <span style="font-size:1.1rem; flex-shrink:0;" aria-hidden="true">⚠️</span>
+        <div>
+          <strong style="font-size:0.95rem; color:#ff9999;">Alpha software — expect rough edges</strong>
+          <p style="font-size:0.88rem; color:var(--text-secondary); margin-top:0.25rem;">XyvorraOS is a personal project in active development. Install on a test machine or VM first. If something explodes, that's what the Issues tab is for.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Download card -->
+  <section class="section" style="padding-top:2rem;">
+    <div class="container">
+
+      <!-- Primary download -->
+      <div class="card-grad-border reveal" style="max-width:640px; margin:0 auto 2.5rem;">
+        <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1rem; margin-bottom:1.5rem;">
+          <div>
+            <div class="badge badge-green" style="margin-bottom:0.5rem;">
+              <span class="pulse-dot" aria-hidden="true"></span>
+              Latest Release
+            </div>
+            <h2 style="font-size:1.5rem;">XyvorraOS Alpha</h2>
+            <p class="text-muted" style="font-size:0.9rem; margin-top:0.25rem;">Grab it from GitHub Releases → check the release notes</p>
+          </div>
+        </div>
+
+        <div class="terminal" style="margin-bottom:1.5rem;">
+          <div class="terminal-bar">
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <div class="terminal-dot"></div>
+            <span style="font-size:0.78rem; color:var(--text-muted); margin-left:auto;">quick start</span>
+          </div>
+          <div><span class="prompt">$ </span><span class="cmd">git clone https://github.com/PixelatedPrelude/XyvorraOS.com</span></div>
+          <div class="out">→ Clone complete. Check the README for next steps.</div>
+        </div>
+
+        <div style="display:flex; flex-wrap:wrap; gap:0.75rem;">
+          <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" class="btn btn-primary" target="_blank" rel="noopener">
+            Download from GitHub ↗
+          </a>
+          <a href="https://github.com/PixelatedPrelude/XyvorraOS.com" class="btn btn-outline" target="_blank" rel="noopener">
+            View Source ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Requirements -->
+      <div class="grid-2" style="max-width:800px; margin:0 auto;">
+        <div class="card reveal">
+          <h3 style="font-size:1rem; margin-bottom:1rem;">Minimum requirements</h3>
+          <table style="width:100%; font-size:0.88rem; border-collapse:collapse;">
+            <tbody>
+              <tr><td style="color:var(--text-muted); padding:0.4rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">Architecture</td><td style="text-align:right; padding:0.4rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">x86_64</td></tr>
+              <tr><td style="color:var(--text-muted); padding:0.4rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">RAM</td><td style="text-align:right; padding:0.4rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">2 GB</td></tr>
+              <tr><td style="color:var(--text-muted); padding:0.4rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">Storage</td><td style="text-align:right; padding:0.4rem 0; border-bottom:1px solid rgba(255,255,255,0.05);">15 GB</td></tr>
+              <tr><td style="color:var(--text-muted); padding:0.4rem 0;">Firmware</td><td style="text-align:right; padding:0.4rem 0;">UEFI or BIOS</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card reveal reveal-delay-1">
+          <h3 style="font-size:1rem; margin-bottom:1rem;">After install</h3>
+          <div style="display:flex; flex-direction:column; gap:0.5rem;">
+            <div style="font-size:0.88rem;"><span class="mono" style="color:var(--verdance);">xyvorra-update</span> <span class="text-muted">— pull latest updates</span></div>
+            <div style="font-size:0.88rem;"><span class="mono" style="color:var(--verdance);">xyvorra-rollback</span> <span class="text-muted">— revert if needed</span></div>
+          </div>
+          <div class="divider" style="margin-block:1rem;"></div>
+          <p style="font-size:0.85rem; color:var(--text-secondary);">All updates, themes, scripts, and packages ship through <span class="mono" style="color:var(--verdance);">xyvorra-update</span>. No manual hunting.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Bug report CTA -->
+  <section class="section--sm">
+    <div class="container">
+      <div style="text-align:center;">
+        <h3 class="reveal" style="font-size:1.15rem;">Something broke?</h3>
+        <p class="reveal reveal-delay-1" style="color:var(--text-secondary); margin:0.5rem auto 1.5rem; max-width:440px; font-size:0.93rem;">
+          Head to the Issues tab. Use the right template — Bug Report, Update Feedback, or Feature Request. The more detail the better.
+        </p>
+        <div class="reveal reveal-delay-2" style="display:flex; flex-wrap:wrap; gap:0.75rem; justify-content:center;">
+          <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues/new?template=bug_report.md" class="btn btn-outline" target="_blank" rel="noopener">File a bug report ↗</a>
+          <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues/new?template=feature_request.md" class="btn btn-outline" target="_blank" rel="noopener">Request a feature ↗</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:0.75rem; display:inline-flex;">
+          <div class="nav-logo-icon" aria-hidden="true">X</div>
+          <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+        </a>
+        <p>Space-age Linux, built for the fun of it. One person. One distro. Endless space.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="themes.html">Themes</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="community.html">Hub</a></li>
+          <li><a href="announcements.html">Announcements</a></li>
+          <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" target="_blank" rel="noopener">Releases ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Pixelated Prelude · XyvorraOS · Built in the void. Shipped to the stars.</span>
+      <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/animations.js"></script>
+<script src="js/nav.js"></script>
+</body>
+</html>

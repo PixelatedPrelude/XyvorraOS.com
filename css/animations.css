@@ -1,0 +1,151 @@
+/* =====================================================
+   XyvorraOS — animations.css
+   Particle canvas, scroll reveals, hover glow, etc.
+   ===================================================== */
+
+/* ── Star / particle canvas ──────────────────────────── */
+#star-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* ── Scanline overlay (subtle) ──────────────────────── */
+.scanlines {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.03) 2px,
+    rgba(0, 0, 0, 0.03) 4px
+  );
+}
+
+/* Lift everything above canvas */
+#nav, #footer, main { position: relative; z-index: 2; }
+
+/* ── Glow text ──────────────────────────────────────── */
+.glow-green {
+  text-shadow: 0 0 18px rgba(4, 158, 71, 0.5);
+}
+
+.glow-byzantium {
+  text-shadow: 0 0 20px rgba(112, 41, 99, 0.6);
+}
+
+/* ── Typing cursor blink ────────────────────────────── */
+.cursor-blink::after {
+  content: '▋';
+  animation: blink 1s step-end infinite;
+  color: var(--verdance);
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ── Pulsing badge dot ──────────────────────────────── */
+.pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--verdance);
+  display: inline-block;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(4, 158, 71, 0.6); }
+  50%       { box-shadow: 0 0 0 5px rgba(4, 158, 71, 0); }
+}
+
+/* ── Float animation (for hero images / icons) ─────── */
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-12px); }
+}
+
+.float { animation: float 5s ease-in-out infinite; }
+.float-slow { animation: float 7s ease-in-out infinite; }
+
+/* ── Gradient border cards ──────────────────────────── */
+.card-grad-border {
+  position: relative;
+  background: var(--void-pearl-mid);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+.card-grad-border::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-lg);
+  padding: 1px;
+  background: linear-gradient(135deg, var(--byzantium), var(--verdance), transparent);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+/* ── Theme color swatch shimmer ─────────────────────── */
+.theme-swatch {
+  position: relative;
+  overflow: hidden;
+}
+.theme-swatch::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(105deg, transparent 40%, rgba(255,255,255,0.12) 50%, transparent 60%);
+  transform: skewX(-15deg);
+  animation: shimmer 3.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { left: -60%; }
+  100% { left: 140%; }
+}
+
+/* ── Fade-in-up (used by JS) ─────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fade-up 0.5s ease forwards; }
+
+/* ── Orbit ring (decorative hero element) ───────────── */
+.orbit-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(112, 41, 99, 0.2);
+  pointer-events: none;
+  animation: orbit-spin linear infinite;
+}
+
+@keyframes orbit-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* ── Reduced motion overrides ───────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  #star-canvas { display: none; }
+}

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Features — XyvorraOS</title>
+  <meta name="description" content="Everything XyvorraOS is built to do — themes, installer, update system, desktop environments and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<!-- NAV (same on every page — only the active link changes) -->
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+      <div class="nav-logo-icon" aria-hidden="true">X</div>
+      <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="themes.html">Themes</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="community.html">Community</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
+      <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="features.html">Features</a>
+  <a href="themes.html">Themes</a>
+  <a href="download.html">Download</a>
+  <a href="announcements.html">News</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="community.html">Community</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+
+  <!-- Page Hero -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// features</p>
+      <h1 class="reveal">What XyvorraOS<br><span class="text-accent">actually does.</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary); max-width:540px; margin-top:1rem; font-size:1.05rem;">
+        A complete desktop experience built from scratch — one piece at a time. Here's everything that's done, in progress, or coming next.
+      </p>
+    </div>
+  </section>
+
+  <!-- Status legend -->
+  <section class="section--sm">
+    <div class="container">
+      <div style="display:flex; flex-wrap:wrap; gap:1rem; align-items:center;">
+        <span style="font-family:var(--font-mono); font-size:0.82rem; color:var(--text-muted);">Status key:</span>
+        <span class="badge badge-green">✓ Shipped</span>
+        <span class="badge badge-byzantium">⟳ In Progress</span>
+        <span class="badge" style="background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px solid rgba(255,255,255,0.1);">◌ Planned</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core features -->
+  <section class="section" style="padding-top:1rem;">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">Core system</div>
+      <h2 class="section-title reveal">The foundation</h2>
+
+      <div class="grid-2" style="gap:1.25rem;">
+
+        <div class="card reveal">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+            <div style="font-size:1.5rem;" aria-hidden="true">⚙️</div>
+            <span class="badge badge-green">✓ Shipped</span>
+          </div>
+          <h3>Custom Installer</h3>
+          <p class="text-muted" style="margin-top:0.5rem; font-size:0.93rem; line-height:1.7;">Full UEFI and BIOS support — old hardware deserves love too. Guided partitioning, timezone and locale setup, all in one clean flow.</p>
+        </div>
+
+        <div class="card reveal reveal-delay-1">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+            <div style="font-size:1.5rem;" aria-hidden="true">🚀</div>
+            <span class="badge badge-green">✓ Shipped</span>
+          </div>
+          <h3>First-Boot Wizard</h3>
+          <p class="text-muted" style="margin-top:0.5rem; font-size:0.93rem; line-height:1.7;">Walks you through theme selection, package choices, and user setup right from the first boot. No digging through configs on day one.</p>
+        </div>
+
+        <div class="card reveal reveal-delay-2">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+            <div style="font-size:1.5rem;" aria-hidden="true">🔄</div>
+            <span class="badge badge-byzantium">⟳ In Progress</span>
+          </div>
+          <h3>xyvorra-update</h3>
+          <p class="text-muted" style="margin-top:0.5rem; font-size:0.93rem; line-height:1.7;">One command to pull OS updates, theme changes, scripts, and packages. Version checking, clean rollout, and rollbacks included.</p>
+          <div class="terminal" style="margin-top:1.25rem;">
+            <div class="terminal-bar">
+              <div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div>
+            </div>
+            <div><span class="prompt">$ </span><span class="cmd">xyvorra-update</span></div>
+            <div class="out">→ Something broke?</div>
+            <div><span class="prompt">$ </span><span class="cmd">xyvorra-rollback</span></div>
+          </div>
+        </div>
+
+        <div class="card reveal reveal-delay-3">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+            <div style="font-size:1.5rem;" aria-hidden="true">🖥️</div>
+            <span class="badge badge-byzantium">⟳ In Progress</span>
+          </div>
+          <h3>XyvorraOS Control Panel</h3>
+          <p class="text-muted" style="margin-top:0.5rem; font-size:0.93rem; line-height:1.7;">A proper GUI for themes, updates, and system settings. No terminal required for everyday system management.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Visual / theming -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">Look & feel</div>
+      <h2 class="section-title reveal">It should look like a starship console.</h2>
+
+      <div class="grid-3">
+
+        <div class="card reveal">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+            <div style="font-size:1.5rem;" aria-hidden="true">🎨</div>
+            <span class="badge badge-green">✓ Shipped</span>
+          </div>
+          <h3>Four Built-in Themes</h3>
+          <p class="text-muted" style="margin-top:0.5rem; font-size:0.92rem;">Galactic Byzantium, Quantum Verdance, Void Pearl, Rosefire Eclipse. Each one hand-crafted.</p>
+          <a href="themes.html" class="btn btn-outline btn-sm" style="margin-top:1rem;">View all themes →</a>
+        </div>
+
+        <div class="card reveal reveal-delay-1">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+            <div style="font-size:1.5rem;" aria-hidden="true">🔐</div>
+            <span class="badge badge-green">✓ Shipped</span>
+          </div>
+          <h3>Custom Login Screens</h3>
+          <p class="text-muted" style="margin-top:0.5rem; font-size:0.92rem;">Custom SDDM themes matching each color theme — because the first thing you see should look good.</p>
+        </div>
+
+        <div class="card reveal reveal-delay-2">
+          <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; margin-bottom:1rem;">
+            <div style="font-size:1.5rem;" aria-hidden="true">🖱️</div>
+            <span class="badge" style="background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px solid rgba(255,255,255,0.1);">◌ Planned</span>
+          </div>
+          <h3>Multiple Desktop Environments</h3>
+          <p class="text-muted" style="margin-top:0.5rem; font-size:0.92rem;">KDE Plasma, Hyprland, Sway, and Openbox — all on the roadmap. Pick your cockpit.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Roadmap teaser -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">Roadmap</div>
+      <h2 class="section-title reveal">Where we're flying next</h2>
+      <p class="section-desc reveal reveal-delay-1">The roadmap is long and kind of chaotic. Submit a feature request — it genuinely helps figure out what to prioritize.</p>
+
+      <div style="display:flex; flex-direction:column; gap:0.75rem; max-width:640px;">
+        <div class="card reveal" style="display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem;">
+          <span class="badge badge-byzantium" style="flex-shrink:0;">⟳</span>
+          <div>
+            <strong style="font-size:0.95rem;">xyvorra-update</strong>
+            <p class="text-muted" style="font-size:0.85rem; margin-top:0.15rem;">Full update system with version checking and clean rollout</p>
+          </div>
+        </div>
+        <div class="card reveal reveal-delay-1" style="display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem;">
+          <span class="badge badge-byzantium" style="flex-shrink:0;">⟳</span>
+          <div>
+            <strong style="font-size:0.95rem;">Control Panel GUI</strong>
+            <p class="text-muted" style="font-size:0.85rem; margin-top:0.15rem;">A proper interface for themes, updates, and system settings</p>
+          </div>
+        </div>
+        <div class="card reveal reveal-delay-2" style="display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem;">
+          <span class="badge" style="flex-shrink:0; background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px solid rgba(255,255,255,0.1);">◌</span>
+          <div>
+            <strong style="font-size:0.95rem;">Hyprland + Sway support</strong>
+            <p class="text-muted" style="font-size:0.85rem; margin-top:0.15rem;">Wayland-native desktop environments with full theme integration</p>
+          </div>
+        </div>
+        <div class="card reveal reveal-delay-3" style="display:flex; align-items:center; gap:1rem; padding:1rem 1.25rem;">
+          <span class="badge" style="flex-shrink:0; background:rgba(255,255,255,0.05); color:var(--text-muted); border:1px solid rgba(255,255,255,0.1);">◌</span>
+          <div>
+            <strong style="font-size:0.95rem;">A whole lot more...</strong>
+            <p class="text-muted" style="font-size:0.85rem; margin-top:0.15rem;">Submit a feature request and help shape what comes next</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:2rem;" class="reveal">
+        <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues" class="btn btn-outline" target="_blank" rel="noopener">Submit a feature request ↗</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:0.75rem; display:inline-flex;">
+          <div class="nav-logo-icon" aria-hidden="true">X</div>
+          <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+        </a>
+        <p>Space-age Linux, built for the fun of it. One person. One distro. Endless space.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="themes.html">Themes</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="community.html">Hub</a></li>
+          <li><a href="announcements.html">Announcements</a></li>
+          <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues" target="_blank" rel="noopener">Issue Tracker ↗</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" target="_blank" rel="noopener">Releases ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/discussions" target="_blank" rel="noopener">Discussions ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Pixelated Prelude · XyvorraOS · Built in the void. Shipped to the stars.</span>
+      <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/animations.js"></script>
+<script src="js/nav.js"></script>
+</body>
+</html>

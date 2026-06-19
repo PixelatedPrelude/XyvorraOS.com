@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Themes — XyvorraOS</title>
+  <meta name="description" content="Four hand-crafted color themes: Galactic Byzantium, Quantum Verdance, Void Pearl, and Rosefire Eclipse." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <style>
+    /* Theme card specifics */
+    .theme-card {
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      border: 1px solid var(--border-subtle);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .theme-card:hover {
+      transform: translateY(-4px);
+    }
+    .theme-preview {
+      height: 200px;
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      padding: 1.25rem;
+      overflow: hidden;
+    }
+    .theme-preview-ui {
+      /* A tiny fake desktop preview */
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    .theme-preview-bar {
+      height: 28px;
+      display: flex;
+      align-items: center;
+      padding: 0 12px;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .theme-preview-bar .dot { width:9px; height:9px; border-radius:50%; }
+    .theme-preview-desktop {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 56px 1fr;
+    }
+    .theme-preview-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      padding: 8px 6px;
+    }
+    .sidebar-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+    }
+    .theme-preview-content {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .content-bar {
+      height: 8px;
+      border-radius: 4px;
+      opacity: 0.6;
+    }
+    .content-bar.short { width: 55%; }
+    .content-bar.med   { width: 80%; }
+    .content-bar.full  { width: 100%; }
+
+    .theme-info {
+      background: var(--void-pearl-mid);
+      padding: 1.25rem;
+    }
+    .theme-name {
+      font-family: var(--font-display);
+      font-weight: 700;
+      font-size: 1.1rem;
+      margin-bottom: 0.35rem;
+    }
+    .theme-desc {
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+      margin-bottom: 0.85rem;
+    }
+    .swatch-row {
+      display: flex;
+      gap: 6px;
+    }
+    .swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 2px solid rgba(255,255,255,0.1);
+      cursor: pointer;
+      transition: transform 0.15s ease;
+    }
+    .swatch:hover { transform: scale(1.2); }
+  </style>
+</head>
+<body>
+
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+      <div class="nav-logo-icon" aria-hidden="true">X</div>
+      <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="themes.html">Themes</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="community.html">Community</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
+      <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="features.html">Features</a>
+  <a href="themes.html">Themes</a>
+  <a href="download.html">Download</a>
+  <a href="announcements.html">News</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="community.html">Community</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// themes</p>
+      <h1 class="reveal">Four themes.<br><span class="text-byzantium">Hand-crafted.</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary); max-width:520px; margin-top:1rem; font-size:1.05rem;">
+        Not generated, not templated. Each color palette was designed to feel like it belongs in a different corner of the galaxy.
+      </p>
+    </div>
+  </section>
+
+  <!-- Theme grid -->
+  <section class="section" style="padding-top:2rem;">
+    <div class="container">
+      <div class="grid-2" style="gap:1.5rem;">
+
+        <!-- Galactic Byzantium -->
+        <div class="theme-card theme-swatch reveal">
+          <div class="theme-preview" style="background:#0d0014;">
+            <div class="theme-preview-ui">
+              <div class="theme-preview-bar" style="background:#1a0029;">
+                <div class="dot" style="background:#ff5f57;"></div>
+                <div class="dot" style="background:#ffbd2e;"></div>
+                <div class="dot" style="background:#702963;"></div>
+              </div>
+              <div class="theme-preview-desktop">
+                <div class="theme-preview-sidebar" style="background:#110020;">
+                  <div class="sidebar-icon" style="background:rgba(112,41,99,0.4);">🪐</div>
+                  <div class="sidebar-icon" style="background:rgba(112,41,99,0.2);">📂</div>
+                  <div class="sidebar-icon" style="background:rgba(112,41,99,0.2);">⚙️</div>
+                </div>
+                <div class="theme-preview-content" style="background:#0d0014;">
+                  <div class="content-bar full" style="background:#702963; height:12px; border-radius:4px; opacity:0.8;"></div>
+                  <div class="content-bar med" style="background:rgba(112,41,99,0.35);"></div>
+                  <div class="content-bar full" style="background:rgba(112,41,99,0.2);"></div>
+                  <div class="content-bar short" style="background:rgba(112,41,99,0.2);"></div>
+                  <div class="content-bar med" style="background:rgba(112,41,99,0.2);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name" style="color:#c76db5;">Galactic Byzantium</div>
+            <p class="theme-desc">Deep purple-black space with Byzantium accents. Regal, dark, mysterious — like the far edge of a nebula.</p>
+            <div class="swatch-row" role="list" aria-label="Galactic Byzantium palette">
+              <div class="swatch" style="background:#702963;" title="#702963 Byzantium" role="listitem"></div>
+              <div class="swatch" style="background:#9b3d8a;" title="#9b3d8a Byzantium Light" role="listitem"></div>
+              <div class="swatch" style="background:#0d0014;" title="#0d0014 Deep Void" role="listitem"></div>
+              <div class="swatch" style="background:#1a0029;" title="#1a0029 Dark Void" role="listitem"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quantum Verdance -->
+        <div class="theme-card theme-swatch reveal reveal-delay-1">
+          <div class="theme-preview" style="background:#001a0a;">
+            <div class="theme-preview-ui">
+              <div class="theme-preview-bar" style="background:#002910;">
+                <div class="dot" style="background:#ff5f57;"></div>
+                <div class="dot" style="background:#ffbd2e;"></div>
+                <div class="dot" style="background:#049e47;"></div>
+              </div>
+              <div class="theme-preview-desktop">
+                <div class="theme-preview-sidebar" style="background:#001506;">
+                  <div class="sidebar-icon" style="background:rgba(4,158,71,0.4);">🌿</div>
+                  <div class="sidebar-icon" style="background:rgba(4,158,71,0.2);">📂</div>
+                  <div class="sidebar-icon" style="background:rgba(4,158,71,0.2);">⚙️</div>
+                </div>
+                <div class="theme-preview-content" style="background:#001a0a;">
+                  <div class="content-bar full" style="background:#049e47; height:12px; border-radius:4px; opacity:0.9;"></div>
+                  <div class="content-bar med" style="background:rgba(4,158,71,0.35);"></div>
+                  <div class="content-bar full" style="background:rgba(4,158,71,0.2);"></div>
+                  <div class="content-bar short" style="background:rgba(4,158,71,0.2);"></div>
+                  <div class="content-bar med" style="background:rgba(4,158,71,0.2);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name" style="color:#06c45a;">Quantum Verdance</div>
+            <p class="theme-desc">Bioluminescent green on deep black. Feels like a terminal that's actually alive — high energy, high contrast.</p>
+            <div class="swatch-row" role="list" aria-label="Quantum Verdance palette">
+              <div class="swatch" style="background:#049e47;" title="#049e47 Green Haze" role="listitem"></div>
+              <div class="swatch" style="background:#06c45a;" title="#06c45a Verdance Light" role="listitem"></div>
+              <div class="swatch" style="background:#001a0a;" title="#001a0a Deep Black" role="listitem"></div>
+              <div class="swatch" style="background:#002910;" title="#002910 Dark Forest" role="listitem"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Void Pearl -->
+        <div class="theme-card theme-swatch reveal reveal-delay-2">
+          <div class="theme-preview" style="background:#001D30;">
+            <div class="theme-preview-ui">
+              <div class="theme-preview-bar" style="background:#002a44;">
+                <div class="dot" style="background:#ff5f57;"></div>
+                <div class="dot" style="background:#ffbd2e;"></div>
+                <div class="dot" style="background:#4a9fc4;"></div>
+              </div>
+              <div class="theme-preview-desktop">
+                <div class="theme-preview-sidebar" style="background:#001520;">
+                  <div class="sidebar-icon" style="background:rgba(74,159,196,0.35);">🌊</div>
+                  <div class="sidebar-icon" style="background:rgba(74,159,196,0.2);">📂</div>
+                  <div class="sidebar-icon" style="background:rgba(74,159,196,0.2);">⚙️</div>
+                </div>
+                <div class="theme-preview-content" style="background:#001D30;">
+                  <div class="content-bar full" style="background:#4a9fc4; height:12px; border-radius:4px; opacity:0.85;"></div>
+                  <div class="content-bar med" style="background:rgba(74,159,196,0.35);"></div>
+                  <div class="content-bar full" style="background:rgba(74,159,196,0.2);"></div>
+                  <div class="content-bar short" style="background:rgba(74,159,196,0.2);"></div>
+                  <div class="content-bar med" style="background:rgba(74,159,196,0.2);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name" style="color:#8ab3c8;">Void Pearl</div>
+            <p class="theme-desc">The default. Deep ocean navy with cool blue-grey accents. Clean, calm, and built for long sessions staring at a screen.</p>
+            <div class="swatch-row" role="list" aria-label="Void Pearl palette">
+              <div class="swatch" style="background:#001D30;" title="#001D30 Black Pearl" role="listitem"></div>
+              <div class="swatch" style="background:#002a44;" title="#002a44 Mid Pearl" role="listitem"></div>
+              <div class="swatch" style="background:#4a9fc4;" title="#4a9fc4 Pearl Blue" role="listitem"></div>
+              <div class="swatch" style="background:#8ab3c8;" title="#8ab3c8 Pearl Light" role="listitem"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rosefire Eclipse -->
+        <div class="theme-card theme-swatch reveal reveal-delay-3">
+          <div class="theme-preview" style="background:#120004;">
+            <div class="theme-preview-ui">
+              <div class="theme-preview-bar" style="background:#1e0008;">
+                <div class="dot" style="background:#ff5f57;"></div>
+                <div class="dot" style="background:#ffbd2e;"></div>
+                <div class="dot" style="background:#65000B;"></div>
+              </div>
+              <div class="theme-preview-desktop">
+                <div class="theme-preview-sidebar" style="background:#0d0002;">
+                  <div class="sidebar-icon" style="background:rgba(101,0,11,0.5);">🌋</div>
+                  <div class="sidebar-icon" style="background:rgba(101,0,11,0.2);">📂</div>
+                  <div class="sidebar-icon" style="background:rgba(101,0,11,0.2);">⚙️</div>
+                </div>
+                <div class="theme-preview-content" style="background:#120004;">
+                  <div class="content-bar full" style="background:#65000B; height:12px; border-radius:4px; opacity:1;"></div>
+                  <div class="content-bar med" style="background:rgba(101,0,11,0.4);"></div>
+                  <div class="content-bar full" style="background:rgba(101,0,11,0.25);"></div>
+                  <div class="content-bar short" style="background:rgba(101,0,11,0.25);"></div>
+                  <div class="content-bar med" style="background:rgba(101,0,11,0.25);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="theme-info">
+            <div class="theme-name" style="color:#ff6b6b;">Rosefire Eclipse</div>
+            <p class="theme-desc">Blackout crimson — deep Rosewood on near-black. Intense, dramatic, and absolutely not subtle. For those who like danger.</p>
+            <div class="swatch-row" role="list" aria-label="Rosefire Eclipse palette">
+              <div class="swatch" style="background:#65000B;" title="#65000B Rosewood" role="listitem"></div>
+              <div class="swatch" style="background:#8a000f;" title="#8a000f Rosefire Light" role="listitem"></div>
+              <div class="swatch" style="background:#120004;" title="#120004 Deep Black" role="listitem"></div>
+              <div class="swatch" style="background:#1e0008;" title="#1e0008 Dark Red" role="listitem"></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Apply themes CTA -->
+  <section class="section--sm">
+    <div class="container">
+      <div class="card" style="text-align:center; max-width:560px; margin:0 auto; padding:2.5rem;">
+        <div style="font-size:1.8rem; margin-bottom:0.75rem;" aria-hidden="true">🎨</div>
+        <h3>Switch themes at any time</h3>
+        <p class="text-muted" style="margin-top:0.5rem; font-size:0.93rem;">All four themes are included in every installation. Switch from the first-boot wizard or the Control Panel — no reinstall needed.</p>
+        <a href="download.html" class="btn btn-primary" style="margin-top:1.25rem;">Get XyvorraOS →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fan art -->
+  <section class="section--sm">
+    <div class="container" style="text-align:center;">
+      <div class="section-label" style="justify-content:center;" aria-hidden="true">Community</div>
+      <h2 class="reveal">Got a theme concept?</h2>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary); margin: 0.75rem auto 1.75rem; max-width:440px;">
+        Drop mockups, fan art, or palette ideas in Discord. If it fits the vibe, it might actually make it into a future release.
+      </p>
+      <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium" target="_blank" rel="noopener" aria-label="Join Discord to share your theme concepts">Share your idea on Discord ↗</a>
+    </div>
+  </section>
+
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:0.75rem; display:inline-flex;">
+          <div class="nav-logo-icon" aria-hidden="true">X</div>
+          <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+        </a>
+        <p>Space-age Linux, built for the fun of it. One person. One distro. Endless space.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="themes.html">Themes</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="community.html">Hub</a></li>
+          <li><a href="announcements.html">Announcements</a></li>
+          <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" target="_blank" rel="noopener">Releases ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Pixelated Prelude · XyvorraOS · Built in the void. Shipped to the stars.</span>
+      <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/animations.js"></script>
+<script src="js/nav.js"></script>
+</body>
+</html>

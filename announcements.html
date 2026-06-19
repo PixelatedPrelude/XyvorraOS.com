@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Announcements — XyvorraOS</title>
+  <meta name="description" content="Latest news, updates, and patch notes for XyvorraOS." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <style>
+    /* ── Announcement card layout ── */
+    .announce-card {
+      background: var(--void-pearl-mid);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 1.5rem;
+      transition: border-color 0.2s ease;
+    }
+    .announce-card:hover {
+      border-color: rgba(112,41,99,0.45);
+    }
+    .announce-card.pinned {
+      border-color: rgba(4,158,71,0.35);
+      background: rgba(4,158,71,0.04);
+    }
+    .announce-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+      margin-bottom: 0.85rem;
+    }
+    .announce-date {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: var(--text-muted);
+    }
+    .announce-title {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .announce-body {
+      color: var(--text-secondary);
+      font-size: 0.92rem;
+      line-height: 1.7;
+    }
+    .announce-body p + p { margin-top: 0.65rem; }
+    .announce-footer {
+      margin-top: 1.1rem;
+      padding-top: 0.85rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+      <div class="nav-logo-icon" aria-hidden="true">X</div>
+      <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="features.html">Features</a></li>
+      <li><a href="themes.html">Themes</a></li>
+      <li><a href="download.html">Download</a></li>
+      <li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li>
+      <li><a href="community.html">Community</a></li>
+    </ul>
+    <div class="nav-cta">
+      <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
+      <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+    </div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a>
+  <a href="features.html">Features</a>
+  <a href="themes.html">Themes</a>
+  <a href="download.html">Download</a>
+  <a href="announcements.html">News</a>
+  <a href="gallery.html">Gallery</a>
+  <a href="community.html">Community</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// announcements</p>
+      <h1 class="reveal">Transmission log.<br><span class="text-accent">Updates from the void.</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary); max-width:500px; margin-top:1rem; font-size:1.05rem;">
+        Patch notes, build updates, announcements, and whatever else needs saying. There will be many updates. Oh so so many.
+      </p>
+    </div>
+  </section>
+
+  <!-- Announce feed -->
+  <section class="section" style="padding-top:2rem;">
+    <div class="container">
+      <div style="max-width:740px; display:flex; flex-direction:column; gap:1.25rem;">
+
+        <!--
+          ════════════════════════════════════════════════════
+          HOW TO ADD ANNOUNCEMENTS:
+          Copy one of the .announce-card divs below, paste it
+          at the top of this list, and update the date, badge,
+          title, and body text. The newest post goes first.
+          ════════════════════════════════════════════════════
+        -->
+
+        <!-- Pinned post -->
+        <div class="announce-card pinned reveal">
+          <div class="announce-meta">
+            <span class="badge badge-green">📌 Pinned</span>
+            <span class="announce-date">2025-01-01</span>
+          </div>
+          <div class="announce-title">Welcome to XyvorraOS — what this project is and where it's going</div>
+          <div class="announce-body">
+            <p>This is the official announcements page for XyvorraOS. If there's a release, a big change, a breaking update, or something you should know before running <span class="mono" style="color:var(--verdance);">xyvorra-update</span> — it'll be here first.</p>
+            <p>For real-time chat, polls, and previews, Discord is where the action is. For code, issues, and releases, that's all on GitHub. This page is for the stuff worth writing down properly.</p>
+          </div>
+          <div class="announce-footer">
+            <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" target="_blank" rel="noopener">Join Discord ↗</a>
+            <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" class="btn btn-outline btn-sm" target="_blank" rel="noopener">View Releases ↗</a>
+          </div>
+        </div>
+
+        <!-- Example post 1 — replace with real content -->
+        <div class="announce-card reveal reveal-delay-1">
+          <div class="announce-meta">
+            <span class="badge badge-byzantium">🔄 Update</span>
+            <span class="announce-date">2025-01-01</span>
+          </div>
+          <div class="announce-title">Project launched — repo is live, alpha is open</div>
+          <div class="announce-body">
+            <p>The GitHub repo is public and the first alpha is available. This is early — stuff will be rough, things will break. That's the point right now. Clone it, install it on a test machine, and tell me what explodes.</p>
+            <p>Bug reports go in the Issues tab. Questions and general chaos go in Discord. Enjoy the void.</p>
+          </div>
+          <div class="announce-footer">
+            <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Releases ↗</a>
+            <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/issues" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Issues ↗</a>
+          </div>
+        </div>
+
+        <!-- Empty state hint (remove when more posts exist) -->
+        <div style="padding:1.5rem; text-align:center; color:var(--text-muted); font-size:0.88rem; border:1px dashed rgba(255,255,255,0.08); border-radius:var(--radius-md);">
+          More transmissions coming soon. <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Join Discord</a> for real-time updates.
+        </div>
+
+      </div>
+
+      <!-- Sidebar links -->
+      <div style="max-width:740px; margin-top:2rem; display:flex; flex-wrap:wrap; gap:0.75rem;">
+        <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" class="btn btn-outline btn-sm" target="_blank" rel="noopener">GitHub Releases ↗</a>
+        <a href="https://github.com/PixelatedPrelude/XyvorraOS.com/discussions" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discussions ↗</a>
+        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord ↗</a>
+      </div>
+
+    </div>
+  </section>
+
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="index.html" class="nav-logo" style="margin-bottom:0.75rem; display:inline-flex;">
+          <div class="nav-logo-icon" aria-hidden="true">X</div>
+          <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+        </a>
+        <p>Space-age Linux, built for the fun of it. One person. One distro. Endless space.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a href="features.html">Features</a></li>
+          <li><a href="themes.html">Themes</a></li>
+          <li><a href="download.html">Download</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="community.html">Hub</a></li>
+          <li><a href="announcements.html">Announcements</a></li>
+          <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Project</h4>
+        <ul>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com" target="_blank" rel="noopener">GitHub ↗</a></li>
+          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" target="_blank" rel="noopener">Releases ↗</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Pixelated Prelude · XyvorraOS · Built in the void. Shipped to the stars.</span>
+      <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
+    </div>
+  </div>
+</footer>
+
+<script src="js/animations.js"></script>
+<script src="js/nav.js"></script>
+</body>
+</html>
