@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Forums — XyvorraOS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" /><link rel="stylesheet" href="css/animations.css" />
+  <style>
+    .forum-category { margin-bottom:2rem; }
+    .forum-category-header { display:flex; align-items:center; gap:.75rem; margin-bottom:.85rem; padding-bottom:.75rem; border-bottom:1px solid var(--border-blue); }
+    .forum-category-icon { width:40px; height:40px; border-radius:10px; background:var(--blue-dim); border:1px solid var(--border-blue); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
+    .forum-category-title { font-family:var(--font-display); font-weight:700; font-size:1rem; }
+    .forum-category-desc { font-size:.82rem; color:var(--text-muted); margin-top:.1rem; }
+    .thread { display:flex; align-items:flex-start; gap:1rem; padding:.9rem 1rem; background:var(--void-pearl-mid); border:1px solid var(--border-subtle); border-radius:var(--radius-md); margin-bottom:.6rem; cursor:pointer; transition:border-color .2s,transform .15s; }
+    .thread:hover { border-color:rgba(46,109,212,0.4); transform:translateX(3px); }
+    .thread-avatar { width:36px; height:36px; border-radius:50%; background:var(--blue-dim); border:1px solid var(--border-blue); display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:700; font-family:var(--font-mono); color:var(--blue-bright); flex-shrink:0; }
+    .thread-title { font-weight:600; font-size:.92rem; margin-bottom:.2rem; }
+    .thread-title a { color:var(--text-primary); text-decoration:none; }
+    .thread-title a:hover { color:var(--blue-bright); }
+    .thread-meta { font-size:.78rem; color:var(--text-muted); display:flex; gap:.85rem; flex-wrap:wrap; }
+    .thread-stats { margin-left:auto; text-align:right; flex-shrink:0; }
+    .thread-stat-num { font-family:var(--font-mono); font-size:.85rem; font-weight:600; color:var(--text-primary); }
+    .thread-stat-label { font-size:.72rem; color:var(--text-muted); }
+    .pinned-thread { border-color:rgba(46,109,212,0.3); background:rgba(26,79,160,0.05); }
+    .new-post-bar { display:flex; align-items:center; gap:.75rem; background:var(--void-pearl-mid); border:1px solid var(--border-blue); border-radius:var(--radius-md); padding:.6rem .85rem; margin-bottom:2rem; }
+    .new-post-input { flex:1; background:transparent; border:none; outline:none; font-family:var(--font-body); font-size:.9rem; color:var(--text-secondary); }
+    .new-post-input::placeholder { color:var(--text-muted); }
+  </style>
+</head>
+<body>
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="XyvorraOS" width="38" height="38" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
+      <li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="forums.html">Forums</a></li>
+      <li><a href="community.html">Community</a></li><li><a href="about.html">About</a></li><li><a href="merch.html">Merch</a></li>
+    </ul>
+    <div class="nav-cta"><span class="nav-version">v1.0.2</span><a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a><a href="download.html" class="btn btn-primary btn-sm">Download</a></div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="features.html">Features</a><a href="download.html">Download</a>
+  <a href="announcements.html">News</a><a href="gallery.html">Gallery</a><a href="forums.html">Forums</a>
+  <a href="community.html">Community</a><a href="about.html">About</a><a href="merch.html">Merch</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// forums</p>
+      <h1 class="reveal">The <span style="color:var(--blue-bright);">crew lounge.</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary);max-width:500px;margin-top:1rem;font-size:1.05rem;">
+        Not a bug, just want to talk? This is the place. Ask questions, share setups, show off your themes, discuss the roadmap.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:2rem;">
+    <div class="container">
+
+      <!-- Note about live forums -->
+      <div class="card reveal" style="border-color:rgba(46,109,212,0.3);background:rgba(26,79,160,0.06);margin-bottom:2.5rem;max-width:660px;">
+        <strong style="font-size:.95rem;">💬 Forums are powered by GitHub Discussions</strong>
+        <p class="text-muted" style="font-size:.88rem;margin-top:.4rem;line-height:1.65;">
+          XyvorraOS forums live directly on GitHub Discussions — no extra account needed if you already have GitHub. Click any category below to open the live thread, or head to Discussions to start a new one.
+        </p>
+        <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" class="btn btn-primary btn-sm" style="margin-top:1rem;" target="_blank" rel="noopener">Open GitHub Discussions ↗</a>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 280px;gap:2.5rem;" class="forums-layout">
+        <div>
+
+          <!-- General -->
+          <div class="forum-category reveal">
+            <div class="forum-category-header">
+              <div class="forum-category-icon" aria-hidden="true">🛸</div>
+              <div><div class="forum-category-title">General — Crew Lounge</div><div class="forum-category-desc">Introductions, off-topic, general chatter</div></div>
+              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/general" class="btn btn-outline btn-sm" style="margin-left:auto;" target="_blank" rel="noopener">Browse ↗</a>
+            </div>
+            <div class="thread pinned-thread thread reveal">
+              <div class="thread-avatar" aria-hidden="true">PP</div>
+              <div style="flex:1;min-width:0;">
+                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" target="_blank" rel="noopener">📌 Welcome to XyvorraOS Forums — read first</a></div>
+                <div class="thread-meta"><span>Pixelated Prelude</span><span>Pinned</span></div>
+              </div>
+            </div>
+            <div class="thread reveal reveal-delay-1">
+              <div class="thread-avatar" aria-hidden="true">?</div>
+              <div style="flex:1;min-width:0;">
+                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=general" target="_blank" rel="noopener">Start a new general discussion →</a></div>
+                <div class="thread-meta"><span>Be the first to post</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Help & Support -->
+          <div class="forum-category reveal reveal-delay-1">
+            <div class="forum-category-header">
+              <div class="forum-category-icon" aria-hidden="true">🔧</div>
+              <div><div class="forum-category-title">Help & Support</div><div class="forum-category-desc">Installation questions, troubleshooting, how-tos</div></div>
+              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/q-a" class="btn btn-outline btn-sm" style="margin-left:auto;" target="_blank" rel="noopener">Browse ↗</a>
+            </div>
+            <div class="thread reveal">
+              <div class="thread-avatar" aria-hidden="true">?</div>
+              <div style="flex:1;">
+                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=q-a" target="_blank" rel="noopener">Ask a question →</a></div>
+                <div class="thread-meta"><span>Installation, drivers, configs — ask here</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Show & Tell -->
+          <div class="forum-category reveal reveal-delay-2">
+            <div class="forum-category-header">
+              <div class="forum-category-icon" aria-hidden="true">🎨</div>
+              <div><div class="forum-category-title">Show & Tell</div><div class="forum-category-desc">Screenshots, setups, themes, fan art</div></div>
+              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/show-and-tell" class="btn btn-outline btn-sm" style="margin-left:auto;" target="_blank" rel="noopener">Browse ↗</a>
+            </div>
+            <div class="thread reveal">
+              <div class="thread-avatar" aria-hidden="true">?</div>
+              <div style="flex:1;">
+                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=show-and-tell" target="_blank" rel="noopener">Share your setup →</a></div>
+                <div class="thread-meta"><span>Screenshots, custom themes, fan art — show the crew</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ideas -->
+          <div class="forum-category reveal">
+            <div class="forum-category-header">
+              <div class="forum-category-icon" aria-hidden="true">💡</div>
+              <div><div class="forum-category-title">Ideas & Feature Requests</div><div class="forum-category-desc">Suggest what to build next</div></div>
+              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" class="btn btn-outline btn-sm" style="margin-left:auto;" target="_blank" rel="noopener">Issues ↗</a>
+            </div>
+            <div class="thread reveal">
+              <div class="thread-avatar" aria-hidden="true">?</div>
+              <div style="flex:1;">
+                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues/new?template=feature_request.md" target="_blank" rel="noopener">Submit a feature request →</a></div>
+                <div class="thread-meta"><span>Use the GitHub Issues template for feature requests and bug reports</span></div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Sidebar -->
+        <div>
+          <div class="card reveal" style="margin-bottom:1.25rem;">
+            <h3 style="font-size:.95rem;margin-bottom:.85rem;">Quick links</h3>
+            <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.88rem;">
+              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new" target="_blank" rel="noopener" style="color:var(--blue-bright);">+ Start a new thread ↗</a>
+              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues/new?template=bug_report.md" target="_blank" rel="noopener" style="color:var(--text-secondary);">File a bug report ↗</a>
+              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener" style="color:var(--text-secondary);">Latest release ↗</a>
+              <a href="announcements.html" style="color:var(--text-secondary);">Announcements →</a>
+            </div>
+          </div>
+          <div class="card reveal reveal-delay-1" style="border-color:rgba(112,41,99,0.3);background:rgba(112,41,99,0.05);">
+            <h3 style="font-size:.95rem;margin-bottom:.6rem;">Real-time chat</h3>
+            <p class="text-muted" style="font-size:.83rem;line-height:1.6;margin-bottom:.85rem;">For faster back-and-forth, Discord is where the crew hangs out.</p>
+            <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" target="_blank" rel="noopener">Join Discord ↗</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:.75rem;display:inline-flex;"><img src="assets/logo.png" alt="" width="32" height="32" aria-hidden="true" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a><p>Built in the void. Shipped to the stars.</p></div>
+      <div class="footer-col"><h4>Product</h4><ul><li><a href="features.html">Features</a></li><li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li></ul></div>
+      <div class="footer-col"><h4>Community</h4><ul><li><a href="forums.html">Forums</a></li><li><a href="community.html">Hub</a></li><li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li></ul></div>
+      <div class="footer-col"><h4>Project</h4><ul><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" target="_blank" rel="noopener">Issues ↗</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2</span><span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span></div>
+  </div>
+</footer>
+<style>@media(max-width:760px){.forums-layout{grid-template-columns:1fr!important;}}</style>
+<script src="js/animations.js"></script><script src="js/nav.js"></script>
+</body></html>

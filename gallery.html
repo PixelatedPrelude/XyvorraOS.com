@@ -1,413 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gallery — XyvorraOS</title>
-  <meta name="description" content="Screenshots, mockups, fan art, and visual previews of XyvorraOS." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css" />
-  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/main.css" /><link rel="stylesheet" href="css/animations.css" />
   <style>
-    /* ── Gallery grid ── */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1.25rem;
-    }
-    .gallery-item {
-      border-radius: var(--radius-lg);
-      overflow: hidden;
-      border: 1px solid var(--border-subtle);
-      background: var(--void-pearl-mid);
-      cursor: pointer;
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-    .gallery-item:hover {
-      transform: translateY(-3px);
-      border-color: rgba(112,41,99,0.5);
-    }
-    .gallery-thumb {
-      width: 100%;
-      aspect-ratio: 16/10;
-      background: var(--void-pearl);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      color: var(--text-muted);
-      position: relative;
-      overflow: hidden;
-    }
-    .gallery-caption {
-      padding: 0.85rem 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    .gallery-caption span {
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-    }
-    .gallery-tag {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-
-    /* Placeholder desktop mockup inside thumb */
-    .thumb-mock {
-      width: 86%;
-      height: 78%;
-      background: #000d1a;
-      border-radius: 6px;
-      border: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
-    .thumb-mock-bar {
-      height: 16px;
-      display: flex;
-      align-items: center;
-      padding: 0 8px;
-      gap: 4px;
-    }
-    .thumb-mock-dot { width:5px; height:5px; border-radius:50%; }
-
-    /* Lightbox */
-    .lightbox {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,10,20,0.95);
-      z-index: 9999;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-    .lightbox.open {
-      opacity: 1;
-      pointer-events: all;
-    }
-    .lightbox-inner {
-      position: relative;
-      max-width: 900px;
-      width: 90%;
-    }
-    .lightbox-img {
-      width: 100%;
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border-subtle);
-    }
-    .lightbox-close {
-      position: absolute;
-      top: -40px;
-      right: 0;
-      background: none;
-      border: none;
-      color: var(--text-primary);
-      font-size: 1.5rem;
-      cursor: pointer;
-      padding: 0.25rem 0.5rem;
-    }
-    .lightbox-caption {
-      text-align: center;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      margin-top: 0.85rem;
-    }
+    .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.25rem; }
+    .gallery-item { border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--border-subtle); background:var(--void-pearl-mid); transition:transform .2s,border-color .2s; }
+    .gallery-item:hover { transform:translateY(-3px); border-color:rgba(46,109,212,0.5); }
+    .gallery-thumb { width:100%; aspect-ratio:16/10; overflow:hidden; background:var(--void-pearl); }
+    .gallery-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
+    .gallery-caption { padding:.85rem 1rem; display:flex; align-items:center; justify-content:space-between; }
+    .gallery-caption span { font-size:.88rem; color:var(--text-secondary); }
+    .gallery-tag { font-family:var(--font-mono); font-size:.72rem; color:var(--text-muted); }
+    .empty-slot { border:1px dashed rgba(255,255,255,0.08); border-radius:var(--radius-lg); aspect-ratio:16/10; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:.5rem; color:var(--text-muted); font-size:.85rem; }
   </style>
 </head>
 <body>
-
 <canvas id="star-canvas" aria-hidden="true"></canvas>
 <div class="scanlines" aria-hidden="true"></div>
 
 <nav id="nav" role="navigation" aria-label="Main navigation">
   <div class="container nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
-      <div class="nav-logo-icon" aria-hidden="true">X</div>
-      <span class="nav-logo-text">Xyvorra<span>OS</span></span>
-    </a>
+    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="XyvorraOS" width="38" height="38" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a>
     <ul class="nav-links" role="list">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="features.html">Features</a></li>
-      <li><a href="themes.html">Themes</a></li>
-      <li><a href="download.html">Download</a></li>
-      <li><a href="announcements.html">News</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="community.html">Community</a></li>
+      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
+      <li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="forums.html">Forums</a></li>
+      <li><a href="community.html">Community</a></li><li><a href="about.html">About</a></li><li><a href="merch.html">Merch</a></li>
     </ul>
-    <div class="nav-cta">
-      <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
-      <a href="download.html" class="btn btn-primary btn-sm">Download</a>
-    </div>
-    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-cta"><span class="nav-version">v1.0.2</span><a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a><a href="download.html" class="btn btn-primary btn-sm">Download</a></div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
   </div>
 </nav>
 <div class="nav-mobile" id="nav-mobile">
-  <a href="index.html">Home</a>
-  <a href="features.html">Features</a>
-  <a href="themes.html">Themes</a>
-  <a href="download.html">Download</a>
-  <a href="announcements.html">News</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="community.html">Community</a>
+  <a href="index.html">Home</a><a href="features.html">Features</a><a href="download.html">Download</a>
+  <a href="announcements.html">News</a><a href="gallery.html">Gallery</a><a href="forums.html">Forums</a>
+  <a href="community.html">Community</a><a href="about.html">About</a><a href="merch.html">Merch</a>
   <div class="divider"></div>
   <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
   <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
 </div>
 
 <main>
-
   <section class="page-hero">
     <div class="container">
       <p class="page-hero-label">// gallery</p>
-      <h1 class="reveal">Show us<br><span class="text-byzantium">your space.</span></h1>
-      <p class="reveal reveal-delay-1" style="color:var(--text-secondary); max-width:500px; margin-top:1rem; font-size:1.05rem;">
-        Screenshots, mockups, fan art, and cool ideas for what XyvorraOS could look like. Got something? Drop it in Discord.
+      <h1 class="reveal">Show us<br><span style="color:var(--blue-bright);">your space.</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary);max-width:500px;margin-top:1rem;font-size:1.05rem;">
+        Screenshots, setups, fan art, and cool ideas. Submissions go through Discord for review before they appear here.
       </p>
     </div>
   </section>
 
-  <!-- Filter tabs -->
+  <!-- Filter -->
   <section class="section--sm" style="padding-top:0;">
     <div class="container">
-      <div style="display:flex; flex-wrap:wrap; gap:0.5rem;" role="tablist" aria-label="Gallery filters">
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;" role="tablist" aria-label="Gallery filters">
         <button class="btn btn-primary btn-sm gallery-filter active" data-filter="all" role="tab" aria-selected="true">All</button>
         <button class="btn btn-outline btn-sm gallery-filter" data-filter="screenshots" role="tab" aria-selected="false">Screenshots</button>
         <button class="btn btn-outline btn-sm gallery-filter" data-filter="themes" role="tab" aria-selected="false">Themes</button>
         <button class="btn btn-outline btn-sm gallery-filter" data-filter="fanart" role="tab" aria-selected="false">Fan Art</button>
+        <button class="btn btn-outline btn-sm gallery-filter" data-filter="setups" role="tab" aria-selected="false">Setups</button>
       </div>
     </div>
   </section>
 
-  <!-- Gallery grid -->
   <section class="section" style="padding-top:1.5rem;">
     <div class="container">
 
       <!--
-        ════════════════════════════════════════════════════
+        ══════════════════════════════════════════════════════
         HOW TO ADD GALLERY IMAGES:
-        1. Drop your image in the assets/ folder
-        2. Copy a .gallery-item div below
-        3. Replace the placeholder content inside .gallery-thumb
-           with: <img src="assets/your-image.png" alt="Description"
-                      style="width:100%; height:100%; object-fit:cover;">
-        4. Update the caption and data-category attribute
-        ════════════════════════════════════════════════════
+        1. Submit in Discord for approval
+        2. Once approved, drop the image in assets/
+        3. Copy this block and fill in the details:
+
+        <div class="gallery-item" data-category="screenshots">
+          <div class="gallery-thumb">
+            <img src="assets/your-image.png" alt="Description of what's shown" />
+          </div>
+          <div class="gallery-caption">
+            <span>Caption text here</span>
+            <span class="gallery-tag">screenshot</span>
+          </div>
+        </div>
+
+        data-category options: screenshots  themes  fanart  setups
+        ══════════════════════════════════════════════════════
       -->
 
       <div class="gallery-grid" id="gallery-grid">
 
-        <!-- Placeholder: Galactic Byzantium screenshot -->
-        <div class="gallery-item reveal" data-category="screenshots themes">
-          <div class="gallery-thumb" style="background:#0d0014;">
-            <div class="thumb-mock">
-              <div class="thumb-mock-bar" style="background:#1a0029;">
-                <div class="thumb-mock-dot" style="background:#ff5f57;"></div>
-                <div class="thumb-mock-dot" style="background:#ffbd2e;"></div>
-                <div class="thumb-mock-dot" style="background:#702963;"></div>
-              </div>
-              <div style="flex:1; display:grid; grid-template-columns:40px 1fr; font-size:8px; gap:4px; padding:6px;">
-                <div style="background:#110020; border-radius:3px;"></div>
-                <div style="background:#0d0014; border-radius:3px; padding:5px; display:flex; flex-direction:column; gap:3px;">
-                  <div style="height:6px; background:rgba(112,41,99,0.7); border-radius:2px;"></div>
-                  <div style="height:4px; background:rgba(112,41,99,0.3); border-radius:2px; width:70%;"></div>
-                  <div style="height:4px; background:rgba(112,41,99,0.2); border-radius:2px;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gallery-caption">
-            <span>Galactic Byzantium — KDE Plasma</span>
-            <span class="gallery-tag">screenshot</span>
-          </div>
-        </div>
-
-        <!-- Placeholder: Quantum Verdance -->
-        <div class="gallery-item reveal reveal-delay-1" data-category="screenshots themes">
-          <div class="gallery-thumb" style="background:#001a0a;">
-            <div class="thumb-mock">
-              <div class="thumb-mock-bar" style="background:#002910;">
-                <div class="thumb-mock-dot" style="background:#ff5f57;"></div>
-                <div class="thumb-mock-dot" style="background:#ffbd2e;"></div>
-                <div class="thumb-mock-dot" style="background:#049e47;"></div>
-              </div>
-              <div style="flex:1; display:grid; grid-template-columns:40px 1fr; font-size:8px; gap:4px; padding:6px;">
-                <div style="background:#001506; border-radius:3px;"></div>
-                <div style="background:#001a0a; border-radius:3px; padding:5px; display:flex; flex-direction:column; gap:3px;">
-                  <div style="height:6px; background:rgba(4,158,71,0.8); border-radius:2px;"></div>
-                  <div style="height:4px; background:rgba(4,158,71,0.35); border-radius:2px; width:65%;"></div>
-                  <div style="height:4px; background:rgba(4,158,71,0.2); border-radius:2px;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gallery-caption">
-            <span>Quantum Verdance — terminal view</span>
-            <span class="gallery-tag">screenshot</span>
-          </div>
-        </div>
-
-        <!-- Placeholder: Void Pearl -->
-        <div class="gallery-item reveal reveal-delay-2" data-category="screenshots themes">
-          <div class="gallery-thumb" style="background:#001D30;">
-            <div class="thumb-mock">
-              <div class="thumb-mock-bar" style="background:#002a44;">
-                <div class="thumb-mock-dot" style="background:#ff5f57;"></div>
-                <div class="thumb-mock-dot" style="background:#ffbd2e;"></div>
-                <div class="thumb-mock-dot" style="background:#4a9fc4;"></div>
-              </div>
-              <div style="flex:1; display:grid; grid-template-columns:40px 1fr; font-size:8px; gap:4px; padding:6px;">
-                <div style="background:#001520; border-radius:3px;"></div>
-                <div style="background:#001D30; border-radius:3px; padding:5px; display:flex; flex-direction:column; gap:3px;">
-                  <div style="height:6px; background:rgba(74,159,196,0.75); border-radius:2px;"></div>
-                  <div style="height:4px; background:rgba(74,159,196,0.3); border-radius:2px; width:80%;"></div>
-                  <div style="height:4px; background:rgba(74,159,196,0.18); border-radius:2px;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gallery-caption">
-            <span>Void Pearl — default desktop</span>
-            <span class="gallery-tag">screenshot</span>
-          </div>
-        </div>
-
-        <!-- Placeholder: Rosefire Eclipse -->
-        <div class="gallery-item reveal reveal-delay-3" data-category="screenshots themes">
-          <div class="gallery-thumb" style="background:#120004;">
-            <div class="thumb-mock">
-              <div class="thumb-mock-bar" style="background:#1e0008;">
-                <div class="thumb-mock-dot" style="background:#ff5f57;"></div>
-                <div class="thumb-mock-dot" style="background:#ffbd2e;"></div>
-                <div class="thumb-mock-dot" style="background:#65000B;"></div>
-              </div>
-              <div style="flex:1; display:grid; grid-template-columns:40px 1fr; font-size:8px; gap:4px; padding:6px;">
-                <div style="background:#0d0002; border-radius:3px;"></div>
-                <div style="background:#120004; border-radius:3px; padding:5px; display:flex; flex-direction:column; gap:3px;">
-                  <div style="height:6px; background:rgba(101,0,11,0.9); border-radius:2px;"></div>
-                  <div style="height:4px; background:rgba(101,0,11,0.4); border-radius:2px; width:55%;"></div>
-                  <div style="height:4px; background:rgba(101,0,11,0.25); border-radius:2px;"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="gallery-caption">
-            <span>Rosefire Eclipse — dark mode</span>
-            <span class="gallery-tag">screenshot</span>
-          </div>
-        </div>
-
-        <!-- Fan art placeholder slot -->
-        <div class="gallery-item reveal" data-category="fanart">
-          <div class="gallery-thumb" style="background:var(--void-pearl); border:2px dashed rgba(255,255,255,0.08);">
-            <div style="text-align:center; padding:1.5rem;">
-              <div style="font-size:2rem; margin-bottom:0.5rem;" aria-hidden="true">🎨</div>
-              <p style="font-size:0.82rem; color:var(--text-muted);">Your fan art could live here</p>
-            </div>
-          </div>
-          <div class="gallery-caption">
-            <span>Submit yours on Discord</span>
-            <span class="gallery-tag">fan art</span>
-          </div>
-        </div>
+        <!-- Add approved images here — empty for now -->
 
       </div>
 
-      <!-- Upload CTA -->
-      <div style="margin-top:2.5rem; padding:2rem; border:1px dashed rgba(112,41,99,0.3); border-radius:var(--radius-lg); text-align:center; max-width:500px; margin-inline:auto;">
-        <div style="font-size:1.8rem; margin-bottom:0.75rem;" aria-hidden="true">🛸</div>
-        <h3 style="font-size:1rem;">Got screenshots or fan art?</h3>
-        <p class="text-muted" style="font-size:0.88rem; margin-top:0.4rem; margin-bottom:1.25rem;">Drop it in Discord — <strong>#gallery</strong> channel. Anything cool might make it onto this page.</p>
-        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" target="_blank" rel="noopener">Open Discord ↗</a>
+      <!-- Empty state -->
+      <div id="gallery-empty" style="padding:4rem 2rem;text-align:center;">
+        <div style="font-size:2.5rem;margin-bottom:1rem;" aria-hidden="true">🛸</div>
+        <h3 style="font-size:1.1rem;margin-bottom:.5rem;">Gallery is filling up</h3>
+        <p class="text-muted" style="font-size:.92rem;max-width:380px;margin:0 auto 1.5rem;">
+          Screenshots, setups, and fan art will appear here as they get submitted and approved through Discord.
+        </p>
+        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-primary" target="_blank" rel="noopener">Submit your screenshot on Discord ↗</a>
+      </div>
+
+      <!-- Submission guide -->
+      <div class="card reveal" style="margin-top:2.5rem;max-width:540px;border-color:rgba(112,41,99,0.25);background:rgba(112,41,99,0.05);">
+        <strong style="font-size:.95rem;">How to get featured</strong>
+        <ol style="margin-top:.75rem;padding-left:1.25rem;display:flex;flex-direction:column;gap:.5rem;font-size:.88rem;color:var(--text-secondary);">
+          <li>Join the Discord server</li>
+          <li>Post your screenshot or art in the <strong style="color:var(--text-primary);">#gallery</strong> channel</li>
+          <li>Wait for approval — if it fits the vibe, it goes up here</li>
+        </ol>
+        <div style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap;">
+          <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" target="_blank" rel="noopener">Join Discord ↗</a>
+        </div>
       </div>
 
     </div>
   </section>
-
 </main>
 
 <footer id="footer">
   <div class="container">
     <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="nav-logo" style="margin-bottom:0.75rem; display:inline-flex;">
-          <div class="nav-logo-icon" aria-hidden="true">X</div>
-          <span class="nav-logo-text">Xyvorra<span>OS</span></span>
-        </a>
-        <p>Space-age Linux, built for the fun of it. One person. One distro. Endless space.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Navigate</h4>
-        <ul>
-          <li><a href="features.html">Features</a></li>
-          <li><a href="themes.html">Themes</a></li>
-          <li><a href="download.html">Download</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Community</h4>
-        <ul>
-          <li><a href="community.html">Hub</a></li>
-          <li><a href="announcements.html">Announcements</a></li>
-          <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Project</h4>
-        <ul>
-          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com" target="_blank" rel="noopener">GitHub ↗</a></li>
-          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS.com/releases" target="_blank" rel="noopener">Releases ↗</a></li>
-        </ul>
-      </div>
+      <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:.75rem;display:inline-flex;"><img src="assets/logo.png" alt="" width="32" height="32" aria-hidden="true" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a><p>Built in the void. Shipped to the stars.</p></div>
+      <div class="footer-col"><h4>Product</h4><ul><li><a href="features.html">Features</a></li><li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
+      <div class="footer-col"><h4>Community</h4><ul><li><a href="forums.html">Forums</a></li><li><a href="community.html">Hub</a></li><li><a href="about.html">About</a></li><li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li></ul></div>
+      <div class="footer-col"><h4>Project</h4><ul><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li></ul></div>
     </div>
-    <div class="footer-bottom">
-      <span>© 2025 Pixelated Prelude · XyvorraOS · Built in the void. Shipped to the stars.</span>
-      <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
-    </div>
+    <div class="footer-bottom"><span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2</span><span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span></div>
   </div>
 </footer>
-
-<script src="js/animations.js"></script>
-<script src="js/nav.js"></script>
+<script src="js/animations.js"></script><script src="js/nav.js"></script>
 <script>
-  // ── Gallery filter ──────────────────────────────────
   const filterBtns = document.querySelectorAll('.gallery-filter');
   const items = document.querySelectorAll('.gallery-item');
+  const empty = document.getElementById('gallery-empty');
 
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       const filter = btn.dataset.filter;
-
-      filterBtns.forEach(b => {
-        b.classList.remove('btn-primary', 'active');
-        b.classList.add('btn-outline');
-        b.setAttribute('aria-selected', 'false');
-      });
-      btn.classList.remove('btn-outline');
-      btn.classList.add('btn-primary', 'active');
-      btn.setAttribute('aria-selected', 'true');
-
+      filterBtns.forEach(b => { b.classList.remove('btn-primary','active'); b.classList.add('btn-outline'); b.setAttribute('aria-selected','false'); });
+      btn.classList.remove('btn-outline'); btn.classList.add('btn-primary','active'); btn.setAttribute('aria-selected','true');
+      let visible = 0;
       items.forEach(item => {
         const cats = item.dataset.category || '';
-        if (filter === 'all' || cats.includes(filter)) {
-          item.style.display = '';
-        } else {
-          item.style.display = 'none';
-        }
+        const show = filter === 'all' || cats.includes(filter);
+        item.style.display = show ? '' : 'none';
+        if (show) visible++;
       });
+      if (empty) empty.style.display = visible === 0 ? '' : 'none';
     });
   });
 </script>
-</body>
-</html>
+</body></html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Merch — XyvorraOS</title>
+  <meta name="description" content="XyvorraOS merch — cups, hats, and gear with the XyvorraOS logo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" /><link rel="stylesheet" href="css/animations.css" />
+  <style>
+    .merch-card {
+      background:var(--void-pearl-mid); border:1px solid var(--border-subtle);
+      border-radius:var(--radius-lg); overflow:hidden;
+      transition:transform .2s,border-color .2s;
+    }
+    .merch-card:hover { transform:translateY(-4px); border-color:rgba(46,109,212,0.5); }
+    .merch-img {
+      width:100%; aspect-ratio:1/1; background:var(--void-pearl);
+      display:flex; align-items:center; justify-content:center;
+      font-size:3.5rem; border-bottom:1px solid var(--border-subtle);
+      position:relative; overflow:hidden;
+    }
+    /* Replace font-size emoji placeholder with real product images later:
+       .merch-img img { width:100%; height:100%; object-fit:cover; } */
+    .merch-info { padding:1.1rem; }
+    .merch-name { font-family:var(--font-display); font-weight:700; font-size:.98rem; margin-bottom:.25rem; }
+    .merch-desc { font-size:.84rem; color:var(--text-muted); line-height:1.55; margin-bottom:.85rem; }
+    .merch-price { font-family:var(--font-mono); font-size:1rem; color:var(--blue-bright); font-weight:600; }
+    .merch-coming { opacity:.55; pointer-events:none; }
+    .coming-overlay {
+      position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+      background:rgba(0,15,30,0.65);
+    }
+    .coming-label {
+      font-family:var(--font-mono); font-size:.78rem; font-weight:700;
+      letter-spacing:.1em; text-transform:uppercase;
+      color:var(--text-muted); background:rgba(0,0,0,0.6);
+      padding:.35rem .85rem; border-radius:999px;
+      border:1px solid rgba(255,255,255,0.12);
+    }
+  </style>
+</head>
+<body>
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="XyvorraOS" width="38" height="38" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
+      <li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="forums.html">Forums</a></li>
+      <li><a href="community.html">Community</a></li><li><a href="about.html">About</a></li><li><a href="merch.html">Merch</a></li>
+    </ul>
+    <div class="nav-cta"><span class="nav-version">v1.0.2</span><a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a><a href="download.html" class="btn btn-primary btn-sm">Download</a></div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="features.html">Features</a><a href="download.html">Download</a>
+  <a href="announcements.html">News</a><a href="gallery.html">Gallery</a><a href="forums.html">Forums</a>
+  <a href="community.html">Community</a><a href="about.html">About</a><a href="merch.html">Merch</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// merch</p>
+      <h1 class="reveal">Wear the <span style="color:var(--blue-bright);">void.</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary);max-width:500px;margin-top:1rem;font-size:1.05rem;">
+        XyvorraOS gear — cups, hats, and more with the logo. Real merch from a real project, made by one person who thinks Linux should look cooler.
+      </p>
+    </div>
+  </section>
+
+  <!-- Coming soon notice -->
+  <section class="section--sm" style="padding-top:0;">
+    <div class="container">
+      <div class="card reveal" style="border-color:rgba(46,109,212,0.3);background:rgba(26,79,160,0.05);max-width:620px;">
+        <strong style="font-size:.95rem;">🚀 Merch store launching soon</strong>
+        <p class="text-muted" style="font-size:.88rem;margin-top:.35rem;line-height:1.65;">
+          The store is being set up. When it goes live, you'll be able to order directly from here. Join Discord to get notified first when it drops — and to vote on which designs get made.
+        </p>
+        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" style="margin-top:.85rem;" target="_blank" rel="noopener">Join Discord for updates ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product preview grid -->
+  <section class="section" style="padding-top:1.5rem;">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">Coming soon</div>
+      <h2 class="section-title reveal">What's in the works.</h2>
+      <p class="section-desc reveal reveal-delay-1">These are the planned products — designs being finalized. Replace placeholders with real product images and store links when ready.</p>
+
+      <!--
+        HOW TO ADD REAL PRODUCTS:
+        1. Add your product image to assets/ (e.g. assets/merch-mug.png)
+        2. Replace the emoji div inside .merch-img with:
+           <img src="assets/merch-mug.png" alt="XyvorraOS Mug" style="width:100%;height:100%;object-fit:cover;">
+        3. Remove class "merch-coming" from the card
+        4. Remove the .coming-overlay div
+        5. Update .merch-price and change the btn link to your store URL
+      -->
+
+      <div class="grid-4">
+
+        <div class="merch-card merch-coming reveal">
+          <div class="merch-img">
+            ☕
+            <div class="coming-overlay"><span class="coming-label">Coming soon</span></div>
+          </div>
+          <div class="merch-info">
+            <div class="merch-name">XyvorraOS Mug</div>
+            <div class="merch-desc">Logo on both sides. 11oz ceramic. Dishwasher safe. For drinking coffee while you debug at 2am.</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+              <span class="merch-price">TBD</span>
+              <span class="badge badge-muted">Soon</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="merch-card merch-coming reveal reveal-delay-1">
+          <div class="merch-img">
+            🧢
+            <div class="coming-overlay"><span class="coming-label">Coming soon</span></div>
+          </div>
+          <div class="merch-info">
+            <div class="merch-name">XyvorraOS Cap</div>
+            <div class="merch-desc">Embroidered logo on the front. Adjustable snapback. Looking like crew whether or not you're at a terminal.</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+              <span class="merch-price">TBD</span>
+              <span class="badge badge-muted">Soon</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="merch-card merch-coming reveal reveal-delay-2">
+          <div class="merch-img">
+            👕
+            <div class="coming-overlay"><span class="coming-label">Coming soon</span></div>
+          </div>
+          <div class="merch-info">
+            <div class="merch-name">XyvorraOS Tee</div>
+            <div class="merch-desc">Classic fit. Front logo. Back tagline: "Built in the void. Shipped to the stars." Available in multiple colors.</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+              <span class="merch-price">TBD</span>
+              <span class="badge badge-muted">Soon</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="merch-card merch-coming reveal reveal-delay-3">
+          <div class="merch-img">
+            🪪
+            <div class="coming-overlay"><span class="coming-label">Coming soon</span></div>
+          </div>
+          <div class="merch-info">
+            <div class="merch-name">Sticker Pack</div>
+            <div class="merch-desc">Logo sticker + all four theme badges. Waterproof vinyl. For laptops, water bottles, server racks — wherever crew members leave their mark.</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.5rem;">
+              <span class="merch-price">TBD</span>
+              <span class="badge badge-muted">Soon</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Design note -->
+      <div class="card reveal" style="margin-top:2rem;max-width:540px;border-color:rgba(112,41,99,0.25);background:rgba(112,41,99,0.05);">
+        <strong style="font-size:.92rem;">🎨 Got a design idea?</strong>
+        <p class="text-muted" style="font-size:.88rem;margin-top:.35rem;line-height:1.65;">If you have a concept for merch — a design, a color combo, a phrase — share it in Discord. Community suggestions may actually end up in the store.</p>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:.75rem;display:inline-flex;"><img src="assets/logo.png" alt="" width="32" height="32" aria-hidden="true" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a><p>Built in the void. Shipped to the stars.</p></div>
+      <div class="footer-col"><h4>Product</h4><ul><li><a href="features.html">Features</a></li><li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li></ul></div>
+      <div class="footer-col"><h4>Community</h4><ul><li><a href="forums.html">Forums</a></li><li><a href="community.html">Hub</a></li><li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li></ul></div>
+      <div class="footer-col"><h4>Project</h4><ul><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2</span><span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span></div>
+  </div>
+</footer>
+<script src="js/animations.js"></script><script src="js/nav.js"></script>
+</body></html>

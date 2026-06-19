@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to Update — XyvorraOS</title>
+  <meta name="description" content="How to update XyvorraOS when a new release comes out — xyvorra-update, rollbacks, and release tracking." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" /><link rel="stylesheet" href="css/animations.css" />
+</head>
+<body>
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="XyvorraOS" width="38" height="38" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
+      <li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="forums.html">Forums</a></li>
+      <li><a href="community.html">Community</a></li><li><a href="about.html">About</a></li><li><a href="merch.html">Merch</a></li>
+    </ul>
+    <div class="nav-cta"><span class="nav-version">v1.0.2</span><a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a><a href="download.html" class="btn btn-primary btn-sm">Download</a></div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="features.html">Features</a><a href="download.html">Download</a>
+  <a href="announcements.html">News</a><a href="gallery.html">Gallery</a><a href="forums.html">Forums</a>
+  <a href="community.html">Community</a><a href="about.html">About</a><a href="merch.html">Merch</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// docs — updates</p>
+      <h1 class="reveal">How to Update <span style="color:var(--blue-bright);">XyvorraOS</span></h1>
+      <p class="reveal reveal-delay-1" style="color:var(--text-secondary);max-width:520px;margin-top:1rem;font-size:1.05rem;">
+        When a new release drops, this is how you grab it. One command pulls everything — updates, themes, scripts, packages. Rollbacks included.
+      </p>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:2rem;">
+    <div class="container" style="max-width:740px;">
+
+      <!-- Standard update -->
+      <div class="section-label" aria-hidden="true">Standard update</div>
+      <h2 class="section-title reveal" style="font-size:1.4rem;">When a new release comes out</h2>
+      <p class="text-muted reveal reveal-delay-1" style="margin-bottom:1.5rem;">Check the <a href="announcements.html">Announcements page</a> or <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">GitHub Releases</a> to see if a new version is available. Then run:</p>
+
+      <div class="terminal reveal reveal-delay-2" style="margin-bottom:2.5rem;">
+        <div class="terminal-bar"><div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div><span style="font-size:.75rem;color:var(--text-muted);margin-left:auto;">xyvorra-shell</span></div>
+        <div><span class="prompt">$ </span><span class="cmd">xyvorra-update</span></div>
+        <div class="out">→ Checking mirrors...</div>
+        <div class="out">→ XyvorraOS v1.0.3 available (current: v1.0.2)</div>
+        <div class="out">→ Creating restore snapshot...</div>
+        <div class="out">→ Downloading packages...</div>
+        <div class="out">→ Updating themes, scripts, configs...</div>
+        <div class="out">→ Done. Reboot recommended.</div>
+        <div><span class="highlight">✦ Update complete. No explosions.</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Rollback -->
+      <div class="section-label" aria-hidden="true">If something broke</div>
+      <h2 class="section-title reveal" style="font-size:1.4rem;">Rolling back</h2>
+      <p class="text-muted reveal reveal-delay-1" style="margin-bottom:1.5rem;">Something broke after an update? No panic. The update system creates a restore point before making changes.</p>
+
+      <div class="terminal reveal reveal-delay-2" style="margin-bottom:2.5rem;">
+        <div class="terminal-bar"><div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div></div>
+        <div><span class="prompt">$ </span><span class="cmd">xyvorra-rollback</span></div>
+        <div class="out">→ Available restore points:</div>
+        <div class="out">   [1] v1.0.2 — 2025-06-18 14:32</div>
+        <div class="out">   [2] v1.0.1 — 2025-05-10 09:14</div>
+        <div class="out">→ Select restore point: 1</div>
+        <div class="out">→ Restoring to v1.0.2...</div>
+        <div><span class="highlight">✦ Rollback complete. Reboot to apply.</span></div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Check version -->
+      <div class="section-label" aria-hidden="true">Version info</div>
+      <h2 class="section-title reveal" style="font-size:1.4rem;">Check your current version</h2>
+
+      <div class="terminal reveal reveal-delay-1" style="margin-bottom:2rem;">
+        <div class="terminal-bar"><div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div></div>
+        <div><span class="prompt">$ </span><span class="cmd">xyvorra-update --version</span></div>
+        <div class="out">XyvorraOS v1.0.2 (current)</div>
+        <div><span class="prompt">$ </span><span class="cmd">xyvorra-update --check</span></div>
+        <div class="out">→ Checking for updates...</div>
+        <div class="out">→ You are up to date.</div>
+      </div>
+
+      <div class="card" style="border-color:rgba(26,79,160,0.3);background:rgba(26,79,160,0.05);">
+        <strong style="font-size:.92rem;">💡 What does xyvorra-update actually update?</strong>
+        <p class="text-muted" style="font-size:.88rem;margin-top:.5rem;line-height:1.7;">Everything: OS packages (via pacman/AUR), XyvorraOS themes, config files, custom scripts, and SDDM login themes. All in one pass. The update system checks mirror speeds, creates a snapshot first, then applies changes in safe order.</p>
+      </div>
+
+      <div style="margin-top:2rem;display:flex;flex-wrap:wrap;gap:.75rem;" class="reveal">
+        <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" class="btn btn-primary" target="_blank" rel="noopener">View Release Notes ↗</a>
+        <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" class="btn btn-outline" target="_blank" rel="noopener">Report update issue ↗</a>
+        <a href="announcements.html" class="btn btn-outline">Announcements →</a>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:.75rem;display:inline-flex;"><img src="assets/logo.png" alt="" width="32" height="32" aria-hidden="true" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a><p>Built in the void. Shipped to the stars.</p></div>
+      <div class="footer-col"><h4>Product</h4><ul><li><a href="features.html">Features</a></li><li><a href="download.html">Download</a></li><li><a href="updates.html">Update Guide</a></li><li><a href="announcements.html">News</a></li></ul></div>
+      <div class="footer-col"><h4>Community</h4><ul><li><a href="forums.html">Forums</a></li><li><a href="community.html">Hub</a></li><li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li></ul></div>
+      <div class="footer-col"><h4>Project</h4><ul><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" target="_blank" rel="noopener">Issues ↗</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2 · Built in the void. Shipped to the stars.</span><span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span></div>
+  </div>
+</footer>
+<script src="js/animations.js"></script><script src="js/nav.js"></script>
+</body></html>

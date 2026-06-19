@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — XyvorraOS</title>
+  <meta name="description" content="Who built XyvorraOS and why — the story of a one-person Linux project built for the love of it." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/main.css" /><link rel="stylesheet" href="css/animations.css" />
+  <style>
+    .timeline { display:flex; flex-direction:column; gap:0; max-width:600px; }
+    .timeline-item { display:flex; gap:1.25rem; padding-bottom:2rem; position:relative; }
+    .timeline-item:last-child { padding-bottom:0; }
+    .timeline-left { display:flex; flex-direction:column; align-items:center; flex-shrink:0; width:36px; }
+    .timeline-dot { width:12px; height:12px; border-radius:50%; background:var(--blue); border:2px solid var(--blue-bright); flex-shrink:0; margin-top:.35rem; }
+    .timeline-line { width:2px; flex:1; background:var(--border-blue); margin-top:6px; }
+    .timeline-item:last-child .timeline-line { display:none; }
+    .timeline-date { font-family:var(--font-mono); font-size:.78rem; color:var(--blue-bright); margin-bottom:.25rem; }
+    .timeline-body { color:var(--text-secondary); font-size:.92rem; line-height:1.7; }
+  </style>
+</head>
+<body>
+<canvas id="star-canvas" aria-hidden="true"></canvas>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav id="nav" role="navigation" aria-label="Main navigation">
+  <div class="container nav-inner">
+    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="XyvorraOS" width="38" height="38" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a>
+    <ul class="nav-links" role="list">
+      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
+      <li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li>
+      <li><a href="gallery.html">Gallery</a></li><li><a href="forums.html">Forums</a></li>
+      <li><a href="community.html">Community</a></li><li><a href="about.html">About</a></li><li><a href="merch.html">Merch</a></li>
+    </ul>
+    <div class="nav-cta"><span class="nav-version">v1.0.2</span><a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a><a href="download.html" class="btn btn-primary btn-sm">Download</a></div>
+    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<div class="nav-mobile" id="nav-mobile">
+  <a href="index.html">Home</a><a href="features.html">Features</a><a href="download.html">Download</a>
+  <a href="announcements.html">News</a><a href="gallery.html">Gallery</a><a href="forums.html">Forums</a>
+  <a href="community.html">Community</a><a href="about.html">About</a><a href="merch.html">Merch</a>
+  <div class="divider"></div>
+  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
+</div>
+
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero-label">// about</p>
+      <h1 class="reveal">Who built this<br><span style="color:var(--blue-bright);">and why.</span></h1>
+    </div>
+  </section>
+
+  <section class="section" style="padding-top:2rem;">
+    <div class="container">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;" class="about-grid">
+
+        <!-- Story -->
+        <div>
+          <div class="section-label" aria-hidden="true">The origin</div>
+          <h2 class="reveal" style="font-size:1.5rem;margin-bottom:1.25rem;">So… why does this exist?</h2>
+
+          <div style="display:flex;flex-direction:column;gap:1rem;color:var(--text-secondary);font-size:.95rem;line-height:1.8;" class="reveal reveal-delay-1">
+            <p>Honestly? I wanted to see if I could do it. I took a Linux class while working on my BA in Cloud Computing and Security — and it kind of snowballed from there.</p>
+            <p>XyvorraOS is my personal Linux distro. No team. No budget. No corporate backing. Just one person, in school, working full-time in IT, somehow finding time to build a distro that looks like it belongs on a starship console.</p>
+            <p>It's based on Arch Linux and built around a space-age aesthetic — fast, minimal, and styled like something out of a sci-fi command center.</p>
+            <p>Yes, I use AI to help debug things sometimes. But a lot of it is hand-written, tested, broken, fixed, and tested again. That's just how it goes. If something explodes, I probably know about it already. If I don't — that's what the Issues tab is for.</p>
+            <p>This is a pet project but that doesn't mean it's half-hearted. It gets taken seriously. It just also gets to be fun, which is the whole point of building something like this in the first place.</p>
+          </div>
+
+          <div style="margin-top:2rem;padding:1.25rem;background:rgba(26,79,160,0.06);border:1px solid var(--border-blue);border-radius:var(--radius-md);" class="reveal reveal-delay-2">
+            <p style="font-family:var(--font-mono);font-size:.85rem;color:var(--text-muted);line-height:1.7;">— Pixelated Prelude<br>BA in Cloud Computing & Security<br>IT professional · Linux enthusiast · one-person distro dev<br><br>Transmission end. ✦</p>
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div>
+          <div class="section-label" aria-hidden="true">Timeline</div>
+          <h2 class="reveal" style="font-size:1.5rem;margin-bottom:1.5rem;">How we got here.</h2>
+
+          <div class="timeline reveal reveal-delay-1">
+            <div class="timeline-item">
+              <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+              <div>
+                <div class="timeline-date">The Linux class</div>
+                <strong style="font-size:.95rem;">The idea forms</strong>
+                <p class="timeline-body">A Linux class, a Cloud Computing degree, and the question: "could I actually build my own distro?" Turns out — yes. Slowly.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+              <div>
+                <div class="timeline-date">Early builds</div>
+                <strong style="font-size:.95rem;">Arch as the base</strong>
+                <p class="timeline-body">Arch Linux chosen for its minimalism and control. The space-age aesthetic takes shape. Four color themes designed from scratch.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-left"><div class="timeline-dot"></div><div class="timeline-line"></div></div>
+              <div>
+                <div class="timeline-date">April 14, 2026</div>
+                <strong style="font-size:.95rem;">v1.0.0 — Baseline release</strong>
+                <p class="timeline-body">First public release. Rough edges and all. The starting line for everything that comes after.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-left"><div class="timeline-dot" style="background:var(--blue-bright);border-color:var(--blue-bright);box-shadow:0 0 8px rgba(74,143,232,0.5);"></div><div class="timeline-line"></div></div>
+              <div>
+                <div class="timeline-date">Now · v1.0.2</div>
+                <strong style="font-size:.95rem;">Active development</strong>
+                <p class="timeline-body">Patches, refinements, new ideas. The roadmap keeps growing. The crew keeps showing up.</p>
+              </div>
+            </div>
+            <div class="timeline-item">
+              <div class="timeline-left"><div class="timeline-dot" style="background:transparent;border-color:rgba(255,255,255,0.2);"></div></div>
+              <div>
+                <div class="timeline-date">What's next</div>
+                <strong style="font-size:.95rem;">Mission Control, AI Bridge, and more</strong>
+                <p class="timeline-body">The roadmap is long and kind of chaotic. <a href="features.html">See the full plan →</a></p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Crew code -->
+  <section class="section" style="padding-top:0;">
+    <div class="container">
+      <div class="section-label" aria-hidden="true">Community</div>
+      <h2 class="reveal">Crew Code.</h2>
+      <p class="text-muted reveal reveal-delay-1" style="max-width:540px;margin-bottom:2rem;">This is a chill project and the community around it should be too. Short rules, simple goal.</p>
+      <div class="grid-2" style="max-width:760px;gap:1rem;">
+        <div class="card reveal" style="display:flex;gap:.85rem;padding:1rem 1.25rem;align-items:flex-start;"><span style="font-size:1.1rem;flex-shrink:0;" aria-hidden="true">🚫</span><div><strong style="font-size:.92rem;">No politics, religion, racism, or OS-bashing</strong><p class="text-muted" style="font-size:.85rem;margin-top:.2rem;">Zero. Not the place. Not ever.</p></div></div>
+        <div class="card reveal reveal-delay-1" style="display:flex;gap:.85rem;padding:1rem 1.25rem;align-items:flex-start;"><span style="font-size:1.1rem;flex-shrink:0;" aria-hidden="true">🤝</span><div><strong style="font-size:.92rem;">Be decent</strong><p class="text-muted" style="font-size:.85rem;margin-top:.2rem;">Personal attacks and being unnecessarily unpleasant — not here.</p></div></div>
+        <div class="card reveal reveal-delay-2" style="display:flex;gap:.85rem;padding:1rem 1.25rem;align-items:flex-start;"><span style="font-size:1.1rem;flex-shrink:0;" aria-hidden="true">✨</span><div><strong style="font-size:.92rem;">Keep it clean</strong><p class="text-muted" style="font-size:.85rem;margin-top:.2rem;">The vibe is good people, good conversations. Match the energy.</p></div></div>
+        <div class="card reveal reveal-delay-3" style="display:flex;gap:.85rem;padding:1rem 1.25rem;align-items:flex-start;"><span style="font-size:1.1rem;flex-shrink:0;" aria-hidden="true">🌌</span><div><strong style="font-size:.92rem;">Don't spiral</strong><p class="text-muted" style="font-size:.85rem;margin-top:.2rem;">Life's too short. The galaxy's too big. Scroll past it.</p></div></div>
+      </div>
+      <div style="margin-top:1.5rem;" class="reveal"><a href="community.html" class="btn btn-outline">Community hub →</a></div>
+    </div>
+  </section>
+</main>
+
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:.75rem;display:inline-flex;"><img src="assets/logo.png" alt="" width="32" height="32" aria-hidden="true" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a><p>Built in the void. Shipped to the stars.</p></div>
+      <div class="footer-col"><h4>Product</h4><ul><li><a href="features.html">Features</a></li><li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li></ul></div>
+      <div class="footer-col"><h4>Community</h4><ul><li><a href="forums.html">Forums</a></li><li><a href="community.html">Hub</a></li><li><a href="about.html">About</a></li><li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li></ul></div>
+      <div class="footer-col"><h4>Project</h4><ul><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2</span><span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span></div>
+  </div>
+</footer>
+<style>@media(max-width:720px){.about-grid{grid-template-columns:1fr!important;}}</style>
+<script src="js/animations.js"></script><script src="js/nav.js"></script>
+</body></html>
