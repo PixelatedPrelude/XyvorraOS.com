@@ -1,192 +1,1282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Forums — XyvorraOS</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta name="description" content="The XyvorraOS crew lounge — ask questions, share setups, submit ideas, and talk shop." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css" /><link rel="stylesheet" href="css/animations.css" />
+
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
   <style>
-    .forum-category { margin-bottom:2rem; }
-    .forum-category-header { display:flex; align-items:center; gap:.75rem; margin-bottom:.85rem; padding-bottom:.75rem; border-bottom:1px solid var(--border-blue); }
-    .forum-category-icon { width:40px; height:40px; border-radius:10px; background:var(--blue-dim); border:1px solid var(--border-blue); display:flex; align-items:center; justify-content:center; font-size:1.2rem; flex-shrink:0; }
-    .forum-category-title { font-family:var(--font-display); font-weight:700; font-size:1rem; }
-    .forum-category-desc { font-size:.82rem; color:var(--text-muted); margin-top:.1rem; }
-    .thread { display:flex; align-items:flex-start; gap:1rem; padding:.9rem 1rem; background:var(--void-pearl-mid); border:1px solid var(--border-subtle); border-radius:var(--radius-md); margin-bottom:.6rem; cursor:pointer; transition:border-color .2s,transform .15s; }
-    .thread:hover { border-color:rgba(46,109,212,0.4); transform:translateX(3px); }
-    .thread-avatar { width:36px; height:36px; border-radius:50%; background:var(--blue-dim); border:1px solid var(--border-blue); display:flex; align-items:center; justify-content:center; font-size:.8rem; font-weight:700; font-family:var(--font-mono); color:var(--blue-bright); flex-shrink:0; }
-    .thread-title { font-weight:600; font-size:.92rem; margin-bottom:.2rem; }
-    .thread-title a { color:var(--text-primary); text-decoration:none; }
-    .thread-title a:hover { color:var(--blue-bright); }
-    .thread-meta { font-size:.78rem; color:var(--text-muted); display:flex; gap:.85rem; flex-wrap:wrap; }
-    .thread-stats { margin-left:auto; text-align:right; flex-shrink:0; }
-    .thread-stat-num { font-family:var(--font-mono); font-size:.85rem; font-weight:600; color:var(--text-primary); }
-    .thread-stat-label { font-size:.72rem; color:var(--text-muted); }
-    .pinned-thread { border-color:rgba(46,109,212,0.3); background:rgba(26,79,160,0.05); }
-    .new-post-bar { display:flex; align-items:center; gap:.75rem; background:var(--void-pearl-mid); border:1px solid var(--border-blue); border-radius:var(--radius-md); padding:.6rem .85rem; margin-bottom:2rem; }
-    .new-post-input { flex:1; background:transparent; border:none; outline:none; font-family:var(--font-body); font-size:.9rem; color:var(--text-secondary); }
-    .new-post-input::placeholder { color:var(--text-muted); }
+    /* ─── RESET & BASE ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --nav-height:    60px;
+      --bg-base:       #0a0d14;
+      --bg-card:       #0d1520;
+      --border-dim:    #1a2535;
+      --border-blue:   #1a4fa0;
+      --blue-bright:   #5ba4ff;
+      --blue-dim:      #0d1f3a;
+      --purple-bright: #a67fff;
+      --purple-dim:    #1a0f2e;
+      --purple-border: #3d2070;
+      --byzantium:     #702163;
+      --green-ok:      #06c45a;
+      --text-primary:  #f0f4ff;
+      --text-secondary:#8fa5be;
+      --text-muted:    #5a7090;
+      --text-nav:      #7a8fa8;
+      --font-mono:     'JetBrains Mono', 'Fira Code', monospace;
+      --font-body:     'Inter', system-ui, sans-serif;
+      --font-display:  'Exo 2', system-ui, sans-serif;
+      --radius-card:   8px;
+      --radius-btn:    7px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ─── LAYOUT ────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ─── NAV ───────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      background: rgba(10, 13, 20, 0.96);
+      border-bottom: 1px solid var(--border-dim);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      gap: 1rem;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-logo img { width: 34px; height: 34px; border-radius: 6px; }
+
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-logo-text span { color: var(--blue-bright); }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      margin: 0; padding: 0;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-nav);
+      text-decoration: none;
+      padding: 0 11px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover  { color: var(--text-primary); }
+    .nav-links a.active { color: var(--text-primary); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .nav-version {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--blue-bright);
+      background: var(--blue-dim);
+      border: 1px solid var(--border-blue);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    /* ─── BUTTONS ───────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius-btn);
+      transition: opacity 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn:hover { opacity: 0.82; }
+    .btn-sm { font-size: 12px; padding: 5px 13px; }
+    .btn-lg { font-size: 14px; padding: 10px 22px; }
+
+    .btn-primary {
+      background: var(--border-blue);
+      color: #fff;
+      border: 1px solid var(--border-blue);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid #2a3f5f;
+    }
+
+    .btn-byzantium {
+      background: var(--byzantium);
+      color: #f0d0f0;
+      border: 1px solid var(--byzantium);
+    }
+
+    /* ─── HAMBURGER ─────────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      margin-left: auto;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--text-nav);
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+
+    /* ─── MOBILE NAV ────────────────────────────────────── */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0; right: 0;
+      z-index: 99;
+      background: rgba(10, 13, 20, 0.98);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 1rem 1.5rem 1.5rem;
+      flex-direction: column;
+    }
+
+    .nav-mobile.open { display: flex; }
+
+    .nav-mobile a {
+      font-size: 15px;
+      color: var(--text-nav);
+      text-decoration: none;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border-dim);
+      transition: color 0.2s;
+    }
+
+    .nav-mobile a:last-of-type { border-bottom: none; }
+    .nav-mobile a:hover { color: var(--text-primary); }
+    .nav-mobile .divider { height: 1px; background: var(--border-dim); margin: 0.75rem 0; }
+
+    /* ─── STAR CANVAS & SCANLINES ───────────────────────── */
+    #star-canvas {
+      position: fixed; inset: 0;
+      z-index: 0; pointer-events: none; opacity: 0.45;
+    }
+
+    .scanlines {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+      );
+    }
+
+    main, #nav, #footer { position: relative; z-index: 2; }
+
+    /* ─── PAGE HERO ─────────────────────────────────────── */
+    .page-hero {
+      padding-top: var(--nav-height);
+      padding-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .page-hero .container { padding-top: 3rem; }
+
+    .hero-glow {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+
+    .hero-glow-1 {
+      top: -60px; left: 5%; width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(26,79,160,0.13) 0%, transparent 70%);
+    }
+
+    .hero-glow-2 {
+      top: 0; right: 5%; width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(112,33,99,0.1) 0%, transparent 70%);
+    }
+
+    .page-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--blue-bright);
+      letter-spacing: 1.5px;
+      margin-bottom: 1rem;
+    }
+
+    .page-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .page-h1 .accent { color: var(--blue-bright); }
+
+    .page-sub {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 520px;
+    }
+
+    /* ─── SECTION ───────────────────────────────────────── */
+    .section { padding: 3rem 0 4rem; }
+    .section-divider { height: 1px; background: var(--border-dim); }
+
+    /* ─── GITHUB DISCUSSIONS BANNER ─────────────────────── */
+    .gh-banner {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      padding: 1.25rem 1.5rem;
+      background: rgba(26, 79, 160, 0.07);
+      border: 1px solid rgba(26, 79, 160, 0.3);
+      border-radius: var(--radius-card);
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .gh-banner-icon {
+      width: 40px; height: 40px;
+      flex-shrink: 0;
+      background: var(--blue-dim);
+      border: 1px solid var(--border-blue);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+
+    .gh-banner-body { flex: 1; min-width: 200px; }
+
+    .gh-banner-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 5px;
+    }
+
+    .gh-banner-desc {
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      line-height: 1.65;
+      margin-bottom: 12px;
+    }
+
+    /* ─── SEARCH BAR ────────────────────────────────────── */
+    .search-bar {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-btn);
+      overflow: hidden;
+      max-width: 540px;
+      margin-bottom: 2.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .search-bar:focus-within { border-color: var(--border-blue); }
+
+    .search-icon {
+      padding: 0 12px;
+      color: var(--text-muted);
+      font-size: 15px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--font-body);
+      font-size: 13px;
+      color: var(--text-primary);
+      padding: 10px 0;
+    }
+
+    .search-input::placeholder { color: var(--text-muted); }
+
+    .search-btn {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 10px 16px;
+      background: var(--border-blue);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-body);
+      transition: opacity 0.2s;
+    }
+
+    .search-btn:hover { opacity: 0.85; }
+
+    /* ─── FORUMS LAYOUT ─────────────────────────────────── */
+    .forums-layout {
+      display: grid;
+      grid-template-columns: 1fr 280px;
+      gap: 2.5rem;
+      align-items: start;
+    }
+
+    /* ─── CATEGORY CARDS ────────────────────────────────── */
+    .category-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-card);
+      padding: 1.4rem 1.5rem;
+      margin-bottom: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .category-card:hover { border-color: #2a4a6f; }
+
+    .category-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 0.85rem;
+    }
+
+    /* icon slot — swap in 32×32 pixel art PNG */
+    .category-icon {
+      width: 38px; height: 38px;
+      flex-shrink: 0;
+      border-radius: 7px;
+      background: #0a1525;
+      border: 1px solid var(--border-dim);
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+
+    .category-icon img {
+      width: 32px; height: 32px;
+      image-rendering: pixelated;
+    }
+
+    .category-icon-placeholder {
+      font-family: var(--font-mono);
+      font-size: 8px;
+      color: #3a5570;
+    }
+
+    .category-meta { flex: 1; min-width: 0; }
+
+    .category-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 3px;
+      letter-spacing: -0.2px;
+    }
+
+    .category-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .category-count {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+      white-space: nowrap;
+      text-align: right;
+      flex-shrink: 0;
+    }
+
+    .category-count strong {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--blue-bright);
+      line-height: 1;
+      margin-bottom: 2px;
+    }
+
+    .category-what {
+      font-size: 12px;
+      color: #3a5070;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--border-dim);
+    }
+
+    .category-what span {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      background: #080c12;
+      border: 1px solid var(--border-dim);
+      border-radius: 4px;
+      padding: 2px 7px;
+      margin: 2px 3px 2px 0;
+    }
+
+    .category-footer {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+
+    .category-new-link {
+      font-size: 12px;
+      color: var(--blue-bright);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .category-new-link:hover { opacity: 0.75; }
+
+    /* ─── SIDEBAR ───────────────────────────────────────── */
+    .sidebar { display: flex; flex-direction: column; gap: 1rem; }
+
+    .sidebar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-card);
+      padding: 1.1rem 1.25rem;
+    }
+
+    .sidebar-card-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.9rem;
+    }
+
+    /* Quick links */
+    .quick-links { display: flex; flex-direction: column; gap: 6px; }
+
+    .quick-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12.5px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      padding: 7px 10px;
+      border-radius: 5px;
+      border: 1px solid transparent;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .quick-link:hover {
+      border-color: var(--border-dim);
+      color: var(--text-primary);
+    }
+
+    .quick-link-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* Recent discussions */
+    .recent-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .recent-item:last-child { border-bottom: none; padding-bottom: 0; }
+
+    .recent-item-title {
+      font-size: 12px;
+      color: var(--text-secondary);
+      text-decoration: none;
+      line-height: 1.45;
+      transition: color 0.2s;
+    }
+
+    .recent-item-title:hover { color: var(--blue-bright); }
+
+    .recent-item-meta {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .recent-badge {
+      display: inline-block;
+      font-size: 9px;
+      font-family: var(--font-mono);
+      border-radius: 3px;
+      padding: 1px 5px;
+      margin-right: 4px;
+      text-transform: uppercase;
+    }
+
+    .rb-general  { background: rgba(26,79,160,0.15); color: var(--blue-bright); }
+    .rb-support  { background: rgba(4,158,71,0.12);  color: #06c45a; }
+    .rb-show     { background: rgba(112,33,99,0.15); color: #e08cd0; }
+    .rb-ideas    { background: rgba(166,127,255,0.12); color: var(--purple-bright); }
+
+    /* Discord card */
+    .discord-card {
+      background: rgba(112, 33, 99, 0.08);
+      border-color: rgba(112, 33, 99, 0.3);
+    }
+
+    .discord-card .sidebar-card-title { color: #e08cd0; }
+
+    .discord-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 1rem;
+    }
+
+    /* ─── CREW CODE ─────────────────────────────────────── */
+    .crew-code {
+      margin-top: 3rem;
+      padding: 1.5rem 1.75rem;
+      background: rgba(10, 13, 20, 0.6);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-card);
+      max-width: 700px;
+    }
+
+    .crew-code-title {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+    }
+
+    .crew-code-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .crew-rule {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      padding: 9px 11px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: 6px;
+    }
+
+    .crew-rule-icon {
+      font-size: 13px;
+      flex-shrink: 0;
+      padding-top: 1px;
+    }
+
+    .crew-rule-title {
+      font-size: 12px;
+      font-weight: 600;
+      color: #c8d8f0;
+      margin-bottom: 2px;
+    }
+
+    .crew-rule-desc {
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────── */
+    #footer {
+      padding: 3rem 0 1.5rem;
+      border-top: 1px solid var(--border-dim);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-top: 0.75rem;
+      max-width: 220px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.9rem;
+    }
+
+    .footer-col ul {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+
+    .footer-col a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--text-secondary); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-dim);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 11px;
+      color: #2e4055;
+    }
+
+    .footer-bottom a { color: #3a5570; text-decoration: none; }
+    .footer-bottom a:hover { color: var(--text-muted); }
+
+    /* ─── REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .forums-layout { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
+      .crew-code-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 760px) {
+      .nav-links     { display: none; }
+      .nav-cta       { display: none; }
+      .nav-hamburger { display: flex; }
+      .footer-grid   { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+      .gh-banner     { flex-direction: column; }
+    }
+
+    @media (max-width: 520px) {
+      .footer-grid        { grid-template-columns: 1fr; }
+      .crew-code-grid     { grid-template-columns: 1fr; }
+      .category-count     { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
   </style>
 </head>
 <body>
-<canvas id="star-canvas" aria-hidden="true"></canvas>
-<div class="scanlines" aria-hidden="true"></div>
 
-<nav id="nav" role="navigation" aria-label="Main navigation">
-  <div class="container nav-inner">
-    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="XyvorraOS" width="38" height="38" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a>
-    <ul class="nav-links" role="list">
-      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
-      <li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li>
-      <li><a href="gallery.html">Gallery</a></li><li><a href="forums.html">Forums</a></li>
-      <li><a href="community.html">Community</a></li><li><a href="about.html">About</a></li><li><a href="merch.html">Merch</a></li>
-    </ul>
-    <div class="nav-cta"><span class="nav-version">v1.0.2</span><a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a><a href="download.html" class="btn btn-primary btn-sm">Download</a></div>
-    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
-  </div>
-</nav>
-<div class="nav-mobile" id="nav-mobile">
-  <a href="index.html">Home</a><a href="features.html">Features</a><a href="download.html">Download</a>
-  <a href="announcements.html">News</a><a href="gallery.html">Gallery</a><a href="forums.html">Forums</a>
-  <a href="community.html">Community</a><a href="about.html">About</a><a href="merch.html">Merch</a>
-  <div class="divider"></div>
-  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
-  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
-</div>
+  <canvas id="star-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
 
-<main>
-  <section class="page-hero">
-    <div class="container">
-      <p class="page-hero-label">// forums</p>
-      <h1 class="reveal">The <span style="color:var(--blue-bright);">crew lounge.</span></h1>
-      <p class="reveal reveal-delay-1" style="color:var(--text-secondary);max-width:500px;margin-top:1rem;font-size:1.05rem;">
-        Not a bug, just want to talk? This is the place. Ask questions, share setups, show off your themes, discuss the roadmap.
-      </p>
+  <!-- ── NAV ──────────────────────────────────────────────── -->
+  <nav id="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+        <img src="assets/logo.png" alt="XyvorraOS logo" width="34" height="34" />
+        <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="download.html">Download</a></li>
+        <li><a href="announcements.html">News</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="forums.html" class="active">Forums</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="merch.html">Merch</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <span class="nav-version">v1.0.2</span>
+        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
+        <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+      </div>
+
+      <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-  </section>
+  </nav>
 
-  <section class="section" style="padding-top:2rem;">
-    <div class="container">
+  <!-- Mobile nav -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="download.html">Download</a>
+    <a href="announcements.html">News</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="forums.html">Forums</a>
+    <a href="community.html">Community</a>
+    <a href="about.html">About</a>
+    <a href="merch.html">Merch</a>
+    <div class="divider"></div>
+    <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+    <a href="download.html" class="btn btn-primary" style="margin-top:0.5rem;justify-content:center;">Download v1.0.2</a>
+  </div>
 
-      <!-- Note about live forums -->
-      <div class="card reveal" style="border-color:rgba(46,109,212,0.3);background:rgba(26,79,160,0.06);margin-bottom:2.5rem;max-width:660px;">
-        <strong style="font-size:.95rem;">💬 Forums are powered by GitHub Discussions</strong>
-        <p class="text-muted" style="font-size:.88rem;margin-top:.4rem;line-height:1.65;">
-          XyvorraOS forums live directly on GitHub Discussions — no extra account needed if you already have GitHub. Click any category below to open the live thread, or head to Discussions to start a new one.
+  <main>
+
+    <!-- ── PAGE HERO ─────────────────────────────────────── -->
+    <section class="page-hero" aria-labelledby="page-heading">
+      <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+      <div class="container">
+        <p class="page-label reveal">// crew lounge</p>
+        <h1 id="page-heading" class="page-h1 reveal reveal-delay-1">
+          The <span class="accent">crew lounge.</span>
+        </h1>
+        <p class="page-sub reveal reveal-delay-2">
+          Ask questions, share setups, show off your themes, submit ideas, and talk shop. Not a bug report — just want to talk? This is the place.
         </p>
-        <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" class="btn btn-primary btn-sm" style="margin-top:1rem;" target="_blank" rel="noopener">Open GitHub Discussions ↗</a>
       </div>
+    </section>
 
-      <div style="display:grid;grid-template-columns:1fr 280px;gap:2.5rem;" class="forums-layout">
-        <div>
+    <!-- ── MAIN SECTION ───────────────────────────────────── -->
+    <section class="section" aria-label="Forums">
+      <div class="container">
 
-          <!-- General -->
-          <div class="forum-category reveal">
-            <div class="forum-category-header">
-              <div class="forum-category-icon" aria-hidden="true">🛸</div>
-              <div><div class="forum-category-title">General — Crew Lounge</div><div class="forum-category-desc">Introductions, off-topic, general chatter</div></div>
-              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/general" class="btn btn-outline btn-sm" style="margin-left:auto;" target="_blank" rel="noopener">Browse ↗</a>
-            </div>
-            <div class="thread pinned-thread thread reveal">
-              <div class="thread-avatar" aria-hidden="true">PP</div>
-              <div style="flex:1;min-width:0;">
-                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" target="_blank" rel="noopener">📌 Welcome to XyvorraOS Forums — read first</a></div>
-                <div class="thread-meta"><span>Pixelated Prelude</span><span>Pinned</span></div>
-              </div>
-            </div>
-            <div class="thread reveal reveal-delay-1">
-              <div class="thread-avatar" aria-hidden="true">?</div>
-              <div style="flex:1;min-width:0;">
-                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=general" target="_blank" rel="noopener">Start a new general discussion →</a></div>
-                <div class="thread-meta"><span>Be the first to post</span></div>
-              </div>
-            </div>
+        <!-- GitHub Discussions banner -->
+        <div class="gh-banner reveal">
+          <div class="gh-banner-icon" aria-hidden="true">
+            <!-- swap for icon-github.png when ready -->
+            <svg width="20" height="20" viewBox="0 0 16 16" fill="#5ba4ff" aria-hidden="true">
+              <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
+            </svg>
           </div>
-
-          <!-- Help & Support -->
-          <div class="forum-category reveal reveal-delay-1">
-            <div class="forum-category-header">
-              <div class="forum-category-icon" aria-hidden="true">🔧</div>
-              <div><div class="forum-category-title">Help & Support</div><div class="forum-category-desc">Installation questions, troubleshooting, how-tos</div></div>
-              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/q-a" class="btn btn-outline btn-sm" style="margin-left:auto;" target="_blank" rel="noopener">Browse ↗</a>
-            </div>
-            <div class="thread reveal">
-              <div class="thread-avatar" aria-hidden="true">?</div>
-              <div style="flex:1;">
-                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=q-a" target="_blank" rel="noopener">Ask a question →</a></div>
-                <div class="thread-meta"><span>Installation, drivers, configs — ask here</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Show & Tell -->
-          <div class="forum-category reveal reveal-delay-2">
-            <div class="forum-category-header">
-              <div class="forum-category-icon" aria-hidden="true">🎨</div>
-              <div><div class="forum-category-title">Show & Tell</div><div class="forum-category-desc">Screenshots, setups, themes, fan art</div></div>
-              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/show-and-tell" class="btn btn-outline btn-sm" style="margin-left:auto;" target="_blank" rel="noopener">Browse ↗</a>
-            </div>
-            <div class="thread reveal">
-              <div class="thread-avatar" aria-hidden="true">?</div>
-              <div style="flex:1;">
-                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=show-and-tell" target="_blank" rel="noopener">Share your setup →</a></div>
-                <div class="thread-meta"><span>Screenshots, custom themes, fan art — show the crew</span></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Ideas -->
-          <div class="forum-category reveal">
-            <div class="forum-category-header">
-              <div class="forum-category-icon" aria-hidden="true">💡</div>
-              <div><div class="forum-category-title">Ideas & Feature Requests</div><div class="forum-category-desc">Suggest what to build next</div></div>
-              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" class="btn btn-outline btn-sm" style="margin-left:auto;" target="_blank" rel="noopener">Issues ↗</a>
-            </div>
-            <div class="thread reveal">
-              <div class="thread-avatar" aria-hidden="true">?</div>
-              <div style="flex:1;">
-                <div class="thread-title"><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues/new?template=feature_request.md" target="_blank" rel="noopener">Submit a feature request →</a></div>
-                <div class="thread-meta"><span>Use the GitHub Issues template for feature requests and bug reports</span></div>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        <!-- Sidebar -->
-        <div>
-          <div class="card reveal" style="margin-bottom:1.25rem;">
-            <h3 style="font-size:.95rem;margin-bottom:.85rem;">Quick links</h3>
-            <div style="display:flex;flex-direction:column;gap:.5rem;font-size:.88rem;">
-              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new" target="_blank" rel="noopener" style="color:var(--blue-bright);">+ Start a new thread ↗</a>
-              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues/new?template=bug_report.md" target="_blank" rel="noopener" style="color:var(--text-secondary);">File a bug report ↗</a>
-              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener" style="color:var(--text-secondary);">Latest release ↗</a>
-              <a href="announcements.html" style="color:var(--text-secondary);">Announcements →</a>
-            </div>
-          </div>
-          <div class="card reveal reveal-delay-1" style="border-color:rgba(112,41,99,0.3);background:rgba(112,41,99,0.05);">
-            <h3 style="font-size:.95rem;margin-bottom:.6rem;">Real-time chat</h3>
-            <p class="text-muted" style="font-size:.83rem;line-height:1.6;margin-bottom:.85rem;">For faster back-and-forth, Discord is where the crew hangs out.</p>
-            <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" target="_blank" rel="noopener">Join Discord ↗</a>
+          <div class="gh-banner-body">
+            <div class="gh-banner-title">Forums are powered by GitHub Discussions</div>
+            <p class="gh-banner-desc">
+              No extra account needed if you already have GitHub. Threads live there, stay searchable forever, and link straight to the codebase when bugs come up. Click any category below to browse or post.
+            </p>
+            <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" class="btn btn-primary btn-sm" target="_blank" rel="noopener">
+              Open GitHub Discussions ↗
+            </a>
           </div>
         </div>
 
+        <!-- Search bar -->
+        <form class="search-bar reveal reveal-delay-1" id="forum-search" role="search" aria-label="Search discussions">
+          <div class="search-icon" aria-hidden="true">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M11.742 10.344a6.5 6.5 0 10-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 001.415-1.414l-3.85-3.85a1.007 1.007 0 00-.115-.099zM12 6.5a5.5 5.5 0 11-11 0 5.5 5.5 0 0111 0z"/>
+            </svg>
+          </div>
+          <input
+            class="search-input"
+            type="search"
+            id="search-input"
+            placeholder="Search discussions — e.g. 'install UEFI' or 'Void Pearl theme'"
+            aria-label="Search GitHub Discussions"
+          />
+          <button class="search-btn" type="submit">Search ↗</button>
+        </form>
+
+        <!-- Two-column layout -->
+        <div class="forums-layout">
+
+          <!-- LEFT: Category cards -->
+          <div>
+
+            <!--
+              ICON SLOTS — make four 32×32 pixel art icons and save to assets/icons/:
+                icon-forum-general.png   → spaceship / chat bubble
+                icon-forum-support.png   → wrench / spanner
+                icon-forum-show.png      → palette / star
+                icon-forum-ideas.png     → lightbulb / rocket
+              Then replace each .category-icon-placeholder span with:
+                <img src="assets/icons/icon-forum-XXXX.png" alt="" />
+            -->
+
+            <!-- General -->
+            <div class="category-card reveal">
+              <div class="category-header">
+                <div class="category-icon" aria-hidden="true">
+                  <span class="category-icon-placeholder">ico</span>
+                </div>
+                <div class="category-meta">
+                  <div class="category-title">General — Crew Lounge</div>
+                  <div class="category-desc">Introductions, off-topic, and general chatter</div>
+                </div>
+                <div class="category-count" aria-label="Discussion count">
+                  <strong id="count-general">—</strong>
+                  discussions
+                </div>
+              </div>
+              <div class="category-what">
+                <span>Introductions</span>
+                <span>Off-topic</span>
+                <span>Space nerd stuff</span>
+                <span>General chat</span>
+              </div>
+              <div class="category-footer">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/general" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Browse ↗</a>
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=general" class="category-new-link" target="_blank" rel="noopener">+ Start a thread</a>
+              </div>
+            </div>
+
+            <!-- Help & Support -->
+            <div class="category-card reveal reveal-delay-1">
+              <div class="category-header">
+                <div class="category-icon" aria-hidden="true">
+                  <span class="category-icon-placeholder">ico</span>
+                </div>
+                <div class="category-meta">
+                  <div class="category-title">Help &amp; Support</div>
+                  <div class="category-desc">Installation questions, troubleshooting, how-tos</div>
+                </div>
+                <div class="category-count" aria-label="Discussion count">
+                  <strong id="count-support">—</strong>
+                  discussions
+                </div>
+              </div>
+              <div class="category-what">
+                <span>Install issues</span>
+                <span>Driver help</span>
+                <span>Config questions</span>
+                <span>Bug discussion</span>
+              </div>
+              <div class="category-footer">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/q-a" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Browse ↗</a>
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=q-a" class="category-new-link" target="_blank" rel="noopener">+ Ask a question</a>
+              </div>
+            </div>
+
+            <!-- Show & Tell -->
+            <div class="category-card reveal reveal-delay-2">
+              <div class="category-header">
+                <div class="category-icon" aria-hidden="true">
+                  <span class="category-icon-placeholder">ico</span>
+                </div>
+                <div class="category-meta">
+                  <div class="category-title">Show &amp; Tell</div>
+                  <div class="category-desc">Screenshots, setups, custom themes, and fan art</div>
+                </div>
+                <div class="category-count" aria-label="Discussion count">
+                  <strong id="count-show">—</strong>
+                  discussions
+                </div>
+              </div>
+              <div class="category-what">
+                <span>Desktop screenshots</span>
+                <span>Custom themes</span>
+                <span>Desk setups</span>
+                <span>Fan art</span>
+              </div>
+              <div class="category-footer">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/categories/show-and-tell" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Browse ↗</a>
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new?category=show-and-tell" class="category-new-link" target="_blank" rel="noopener">+ Share yours</a>
+              </div>
+            </div>
+
+            <!-- Ideas & Feature Requests -->
+            <div class="category-card reveal reveal-delay-3">
+              <div class="category-header">
+                <div class="category-icon" aria-hidden="true">
+                  <span class="category-icon-placeholder">ico</span>
+                </div>
+                <div class="category-meta">
+                  <div class="category-title">Ideas &amp; Feature Requests</div>
+                  <div class="category-desc">Suggest what to build next — roadmap input welcome</div>
+                </div>
+                <div class="category-count" aria-label="Discussion count">
+                  <strong id="count-ideas">—</strong>
+                  open
+                </div>
+              </div>
+              <div class="category-what">
+                <span>Feature ideas</span>
+                <span>Roadmap discussion</span>
+                <span>Theme concepts</span>
+                <span>Bug reports</span>
+              </div>
+              <div class="category-footer">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Browse Issues ↗</a>
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues/new" class="category-new-link" target="_blank" rel="noopener">+ Submit idea</a>
+              </div>
+            </div>
+
+            <!-- Crew Code -->
+            <div class="crew-code reveal">
+              <div class="crew-code-title">Crew Code — how we roll in here</div>
+              <div class="crew-code-grid">
+                <div class="crew-rule">
+                  <div class="crew-rule-icon">🚫</div>
+                  <div>
+                    <div class="crew-rule-title">No politics, religion, or OS-bashing</div>
+                    <div class="crew-rule-desc">Zero. Not the place. Not ever.</div>
+                  </div>
+                </div>
+                <div class="crew-rule">
+                  <div class="crew-rule-icon">🤝</div>
+                  <div>
+                    <div class="crew-rule-title">Be decent</div>
+                    <div class="crew-rule-desc">Personal attacks and being unnecessarily unpleasant — not here.</div>
+                  </div>
+                </div>
+                <div class="crew-rule">
+                  <div class="crew-rule-icon">✦</div>
+                  <div>
+                    <div class="crew-rule-title">Keep it clean</div>
+                    <div class="crew-rule-desc">Good people, good conversations. Match the energy.</div>
+                  </div>
+                </div>
+                <div class="crew-rule">
+                  <div class="crew-rule-icon">🌌</div>
+                  <div>
+                    <div class="crew-rule-title">Don't spiral</div>
+                    <div class="crew-rule-desc">Life's too short. The galaxy's too big. Scroll past it.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- RIGHT: Sidebar -->
+          <div class="sidebar">
+
+            <!-- Quick links -->
+            <div class="sidebar-card reveal">
+              <div class="sidebar-card-title">Quick links</div>
+              <div class="quick-links">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions/new" class="quick-link" target="_blank" rel="noopener">
+                  <div class="quick-link-dot" style="background:var(--blue-bright);"></div>
+                  Start a new thread ↗
+                </a>
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues/new?template=bug_report.md" class="quick-link" target="_blank" rel="noopener">
+                  <div class="quick-link-dot" style="background:#ff6b6b;"></div>
+                  File a bug report ↗
+                </a>
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" class="quick-link" target="_blank" rel="noopener">
+                  <div class="quick-link-dot" style="background:var(--green-ok);"></div>
+                  Latest release ↗
+                </a>
+                <a href="announcements.html" class="quick-link">
+                  <div class="quick-link-dot" style="background:var(--purple-bright);"></div>
+                  Announcements →
+                </a>
+                <a href="features.html" class="quick-link">
+                  <div class="quick-link-dot" style="background:#7a8fa8;"></div>
+                  Roadmap →
+                </a>
+              </div>
+            </div>
+
+            <!-- Recently active — static placeholder, update manually or via serverless fn -->
+            <div class="sidebar-card reveal reveal-delay-1">
+              <div class="sidebar-card-title">Recently active</div>
+
+              <div class="recent-item">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" class="recent-item-title" target="_blank" rel="noopener">
+                  <span class="recent-badge rb-general">general</span>
+                  Welcome to XyvorraOS Forums
+                </a>
+                <div class="recent-item-meta">Pixelated Prelude · pinned</div>
+              </div>
+
+              <div class="recent-item">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" class="recent-item-title" target="_blank" rel="noopener">
+                  <span class="recent-badge rb-support">support</span>
+                  Threads appear here as they're posted
+                </a>
+                <div class="recent-item-meta">Be the first to post</div>
+              </div>
+
+              <div class="recent-item">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" class="recent-item-title" target="_blank" rel="noopener">
+                  <span class="recent-badge rb-ideas">ideas</span>
+                  Feature requests via GitHub Issues
+                </a>
+                <div class="recent-item-meta">Submit on GitHub ↗</div>
+              </div>
+
+              <div style="margin-top:0.85rem;">
+                <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions" class="category-new-link" target="_blank" rel="noopener" style="font-size:11.5px;">
+                  View all on GitHub ↗
+                </a>
+              </div>
+            </div>
+
+            <!-- Discord card -->
+            <div class="sidebar-card discord-card reveal reveal-delay-2">
+              <div class="sidebar-card-title">Real-time chat</div>
+              <p class="discord-desc">
+                For faster back-and-forth, Discord is where the crew hangs out. Polls, patch previews, general space-nerd conversation — all in there.
+              </p>
+              <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" target="_blank" rel="noopener">
+                Join Discord ↗
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ────────────────────────────────────────────── -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+            <img src="assets/logo.png" alt="" width="30" height="30" aria-hidden="true" />
+            <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+          </a>
+          <p>Built in the void. Shipped to the stars.<br>One person. One distro. Endless space.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="features.html">Features</a></li>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="announcements.html">News</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="merch.html">Merch</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="forums.html">Forums</a></li>
+            <li><a href="community.html">Hub</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Project</h4>
+          <ul>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" target="_blank" rel="noopener">Issue Tracker ↗</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2 · Built in the void. Shipped to the stars.</span>
+        <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
       </div>
     </div>
-  </section>
-</main>
+  </footer>
 
-<footer id="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:.75rem;display:inline-flex;"><img src="assets/logo.png" alt="" width="32" height="32" aria-hidden="true" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a><p>Built in the void. Shipped to the stars.</p></div>
-      <div class="footer-col"><h4>Product</h4><ul><li><a href="features.html">Features</a></li><li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li></ul></div>
-      <div class="footer-col"><h4>Community</h4><ul><li><a href="forums.html">Forums</a></li><li><a href="community.html">Hub</a></li><li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li></ul></div>
-      <div class="footer-col"><h4>Project</h4><ul><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" target="_blank" rel="noopener">Issues ↗</a></li></ul></div>
-    </div>
-    <div class="footer-bottom"><span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2</span><span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span></div>
-  </div>
-</footer>
-<style>@media(max-width:760px){.forums-layout{grid-template-columns:1fr!important;}}</style>
-<script src="js/animations.js"></script><script src="js/nav.js"></script>
-</body></html>
+  <!-- ── SCRIPTS ───────────────────────────────────────────── -->
+  <script src="js/animations.js"></script>
+
+  <script>
+    /* ── Hamburger ── */
+    const toggle    = document.getElementById('nav-toggle');
+    const mobileNav = document.getElementById('nav-mobile');
+
+    toggle.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+      mobileNav.setAttribute('aria-hidden', !open);
+    });
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        mobileNav.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    /* ── Scroll reveal ── */
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── Search — redirect to GitHub Discussions ── */
+    document.getElementById('forum-search').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const q = document.getElementById('search-input').value.trim();
+      if (!q) return;
+      const url = `https://github.com/PixelatedPrelude/XyvorraOS-Updates/discussions?discussions_q=${encodeURIComponent(q)}`;
+      window.open(url, '_blank', 'noopener');
+    });
+
+    /* ── Discussion counts via GitHub REST API (public, no auth needed for counts) ──
+       Fetches open discussion/issue counts and populates the category cards.
+       Falls back silently to '—' if the request fails.
+    ── */
+    async function loadCounts() {
+      try {
+        /* GitHub Issues API — used for Ideas count (issues are public) */
+        const issueRes = await fetch(
+          'https://api.github.com/repos/PixelatedPrelude/XyvorraOS-Updates/issues?state=open&per_page=1',
+          { headers: { 'Accept': 'application/vnd.github+json' } }
+        );
+
+        if (issueRes.ok) {
+          /* Link header contains total count for GitHub APIs */
+          const link = issueRes.headers.get('Link') || '';
+          const match = link.match(/page=(\d+)>; rel="last"/);
+          const count = match ? parseInt(match[1], 10) : 1;
+          const el = document.getElementById('count-ideas');
+          if (el) el.textContent = count;
+        }
+      } catch (_) {
+        /* Silently fail — counts stay as '—' */
+      }
+
+      /* Discussions API requires GraphQL + auth in browser context,
+         so general / support / show counts stay as '—' until
+         a serverless function is wired up to proxy the GraphQL query.
+         The counts are decorative — the page works fine without them. */
+    }
+
+    loadCounts();
+
+    /* ── Star canvas ── */
+    const canvas = document.getElementById('star-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let stars  = [];
+
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function initStars() {
+        stars = Array.from({ length: 55 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          o: Math.random() * 0.6 + 0.2,
+          speed: Math.random() * 0.3 + 0.05
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+          s.o += s.speed * 0.02;
+          if (s.o > 0.8) s.speed = -Math.abs(s.speed);
+          if (s.o < 0.1) s.speed =  Math.abs(s.speed);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(180,210,255,${s.o})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      initStars();
+      draw();
+      window.addEventListener('resize', () => { resize(); initStars(); });
+    }
+  </script>
+
+</body>
+</html>
