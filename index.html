@@ -4,264 +4,1167 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>XyvorraOS — Built in the void. Shipped to the stars.</title>
-  <meta name="description" content="XyvorraOS — a space-age Arch-based Linux distro. One dev. Four themes. Endless space." />
+  <meta name="description" content="XyvorraOS — an Arch-based Linux distro built with space-age aesthetics. One developer. Four themes. Endless space." />
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Existing stylesheets (keep these — they provide shared nav/footer/animations) -->
   <link rel="stylesheet" href="css/main.css" />
   <link rel="stylesheet" href="css/animations.css" />
+
   <style>
-    /* Hero two-column layout */
+    /* ─── RESET & BASE ────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --nav-height: 60px;
+      --bg-base:       #0a0d14;
+      --bg-card:       #0d1520;
+      --bg-terminal:   #060a0f;
+      --border-dim:    #1a2535;
+      --border-blue:   #1a4fa0;
+      --blue-bright:   #5ba4ff;
+      --blue-dim:      #0d1f3a;
+      --purple-bright: #a67fff;
+      --purple-dim:    #1a0f2e;
+      --purple-border: #3d2070;
+      --byzantium:     #702163;
+      --green-ok:      #28c840;
+      --text-primary:  #f0f4ff;
+      --text-secondary:#8fa5be;
+      --text-muted:    #5a7090;
+      --text-nav:      #7a8fa8;
+      --font-mono:     'JetBrains Mono', 'Fira Code', monospace;
+      --font-body:     'Inter', system-ui, sans-serif;
+      --font-display:  'Exo 2', system-ui, sans-serif;
+      --radius-card:   8px;
+      --radius-btn:    7px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ─── LAYOUT ──────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ─── NAV ─────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      background: rgba(10, 13, 20, 0.96);
+      border-bottom: 1px solid var(--border-dim);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      gap: 1rem;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-logo img {
+      width: 34px;
+      height: 34px;
+      border-radius: 6px;
+    }
+
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-logo-text span { color: var(--blue-bright); }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 0;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-nav);
+      text-decoration: none;
+      padding: 0 11px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover,
+    .nav-links a.active { color: var(--text-primary); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .nav-version {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--blue-bright);
+      background: var(--blue-dim);
+      border: 1px solid var(--border-blue);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    /* ─── HAMBURGER ───────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      margin-left: auto;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text-nav);
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+
+    /* ─── MOBILE NAV ──────────────────────────────────── */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0; right: 0;
+      z-index: 99;
+      background: rgba(10, 13, 20, 0.98);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 1rem 1.5rem 1.5rem;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .nav-mobile.open { display: flex; }
+
+    .nav-mobile a {
+      font-size: 15px;
+      color: var(--text-nav);
+      text-decoration: none;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border-dim);
+      transition: color 0.2s;
+    }
+
+    .nav-mobile a:last-of-type { border-bottom: none; }
+    .nav-mobile a:hover { color: var(--text-primary); }
+
+    .nav-mobile .divider {
+      height: 1px;
+      background: var(--border-dim);
+      margin: 0.75rem 0;
+    }
+
+    /* ─── BUTTONS ─────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius-btn);
+      transition: opacity 0.2s, background 0.2s, border-color 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn:hover { opacity: 0.85; }
+
+    .btn-sm  { font-size: 12px; padding: 5px 13px; }
+    .btn-lg  { font-size: 14px; padding: 10px 20px; }
+
+    .btn-primary {
+      background: var(--border-blue);
+      color: #fff;
+      border: 1px solid var(--border-blue);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid #2a3f5f;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border-dim);
+    }
+
+    .btn-byzantium {
+      background: var(--byzantium);
+      color: #f0d0f0;
+      border: 1px solid var(--byzantium);
+    }
+
+    /* ─── BADGES ──────────────────────────────────────── */
+    .badge-active {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      color: var(--blue-bright);
+      background: var(--blue-dim);
+      border: 1px solid var(--border-blue);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .badge-ver {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--purple-bright);
+      background: var(--purple-dim);
+      border: 1px solid var(--purple-border);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--blue-bright);
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.3; }
+    }
+
+    /* ─── HERO ────────────────────────────────────────── */
+    .hero-section {
+      padding-top: var(--nav-height);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-glow {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .hero-glow-1 {
+      top: -60px; left: 5%;
+      width: 480px; height: 480px;
+      background: radial-gradient(circle, rgba(26,79,160,0.14) 0%, transparent 70%);
+    }
+
+    .hero-glow-2 {
+      top: 10%; right: 3%;
+      width: 360px; height: 360px;
+      background: radial-gradient(circle, rgba(112,33,99,0.12) 0%, transparent 70%);
+    }
+
     .hero-grid {
       display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 4rem;
+      grid-template-columns: 1fr 380px;
+      gap: 3.5rem;
       align-items: center;
-      min-height: calc(100svh - var(--nav-height));
       padding-block: 4rem 5rem;
     }
-    @media (max-width: 900px) {
-      .hero-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .hero-logo-col { display: flex; justify-content: center; order: -1; }
+
+    .hero-badge-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 1.2rem;
     }
+
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      margin: 0 0 0.4rem;
+      color: var(--text-primary);
+    }
+
+    .hero-h1 .accent { color: var(--blue-bright); }
+
+    .hero-sub-tagline {
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--text-nav);
+      margin-bottom: 1.1rem;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      max-width: 500px;
+      margin-bottom: 1.8rem;
+    }
+
+    .hero-btns {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    /* ─── TERMINAL ────────────────────────────────────── */
+    .terminal {
+      background: var(--bg-terminal);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      max-width: 460px;
+    }
+
+    .terminal-bar {
+      background: #0d1520;
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .term-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .term-dot-r { background: #ff5f57; }
+    .term-dot-y { background: #febc2e; }
+    .term-dot-g { background: #28c840; }
+
+    .term-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: #4a5f75;
+      margin-left: auto;
+    }
+
+    .terminal-body {
+      padding: 12px 14px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      line-height: 1.9;
+    }
+
+    .term-prompt { color: var(--blue-bright); }
+    .term-cmd    { color: var(--text-primary); }
+    .term-out    { color: #4a7a6a; }
+
+    .term-row {
+      display: flex;
+      align-items: baseline;
+      gap: 0;
+    }
+
+    .term-check { color: var(--green-ok); width: 1.4em; flex-shrink: 0; }
+
+    .term-sys-label {
+      color: #6a8fa8;
+      flex: 1;
+    }
+
+    .term-status { color: var(--green-ok); }
+
+    .term-final {
+      color: var(--purple-bright);
+      margin-top: 2px;
+    }
+
+    /* ─── HERO LOGO COL ───────────────────────────────── */
+    .hero-logo-col {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
     .hero-logo-col img {
       width: 100%;
-      max-width: 380px;
-      filter: drop-shadow(0 0 40px rgba(26,79,160,0.35)) drop-shadow(0 0 80px rgba(112,41,99,0.2));
+      max-width: 360px;
+      filter: drop-shadow(0 0 40px rgba(26,79,160,0.3))
+              drop-shadow(0 0 80px rgba(112,41,99,0.18));
+      animation: float 5s ease-in-out infinite;
     }
-    .hero-eyebrow {
-      display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
-      margin-bottom: 1.25rem;
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-12px); }
     }
-    .version-chip {
-      font-family: var(--font-mono); font-size: 0.75rem;
-      color: var(--blue-bright); background: var(--blue-dim);
-      border: 1px solid var(--border-blue); border-radius: 999px;
-      padding: 0.22rem 0.65rem;
+
+    /* ─── SECTIONS ────────────────────────────────────── */
+    .section { padding: 4rem 0; }
+
+    .section-divider {
+      height: 1px;
+      background: var(--border-dim);
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--blue-bright);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1.25;
+      margin-bottom: 0.6rem;
+      letter-spacing: -0.3px;
+    }
+
+    .section-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      margin-bottom: 2rem;
+      max-width: 560px;
+      line-height: 1.7;
+    }
+
+    /* ─── FEATURE CARDS ───────────────────────────────── */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 1.5rem;
+    }
+
+    .feat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-card);
+      padding: 1.1rem 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .feat-card:hover { border-color: var(--border-blue); }
+
+    .feat-card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 0.6rem;
+    }
+
+    /* icon slot — swap in your 32×32 PNG */
+    .feat-icon {
+      width: 32px;
+      height: 32px;
+      flex-shrink: 0;
+      border-radius: 5px;
+      background: #0a1525;
+      border: 1px solid var(--border-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .feat-icon img {
+      width: 32px;
+      height: 32px;
+      image-rendering: pixelated;  /* keeps pixel art crisp */
+    }
+
+    .feat-title {
+      font-family: var(--font-display);
+      font-size: 14px;
+      font-weight: 700;
+      color: #c8d8f0;
+      padding-top: 2px;
+    }
+
+    .feat-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    .feat-mono {
+      font-family: var(--font-mono);
+      color: var(--blue-bright);
+      font-size: 11px;
+    }
+
+    /* ─── THEME SWATCHES ──────────────────────────────── */
+    .theme-swatches {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .swatch-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 2px;
+      flex-shrink: 0;
+    }
+
+    .swatch-name {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: #4a6080;
+    }
+
+    /* ─── MORE LINK ───────────────────────────────────── */
+    .more-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      color: var(--blue-bright);
+      text-decoration: none;
+      transition: opacity 0.2s;
+    }
+
+    .more-link:hover { opacity: 0.75; }
+
+    /* ─── COMMUNITY CTA ───────────────────────────────── */
+    .cta-section {
+      background: rgba(13, 21, 32, 0.6);
+      border-top: 1px solid var(--border-dim);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 4rem 0;
+      text-align: center;
+    }
+
+    .cta-eyebrow {
+      font-size: 11px;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--byzantium);
+      margin-bottom: 0.75rem;
+    }
+
+    .cta-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.4rem, 3vw, 1.9rem);
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.3px;
+    }
+
+    .cta-desc {
+      font-size: 14px;
+      color: var(--text-secondary);
+      max-width: 440px;
+      margin: 0 auto 2rem;
+      line-height: 1.75;
+    }
+
+    .cta-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ─── FOOTER ──────────────────────────────────────── */
+    #footer {
+      padding: 3rem 0 1.5rem;
+      border-top: 1px solid var(--border-dim);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-top: 0.75rem;
+      max-width: 220px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.9rem;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .footer-col a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--text-secondary); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-dim);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 11px;
+      color: #2e4055;
+    }
+
+    .footer-bottom a {
+      color: #3a5570;
+      text-decoration: none;
+    }
+
+    .footer-bottom a:hover { color: var(--text-muted); }
+
+    /* ─── STAR CANVAS & SCANLINES ─────────────────────── */
+    #star-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    .scanlines {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(0, 0, 0, 0.03) 2px,
+        rgba(0, 0, 0, 0.03) 4px
+      );
+    }
+
+    main, #nav, #footer { position: relative; z-index: 2; }
+
+    /* ─── REVEAL ANIMATIONS ───────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+
+    /* ─── RESPONSIVE ──────────────────────────────────── */
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding-block: 2.5rem 3rem;
+      }
+
+      .hero-logo-col {
+        order: -1;
+      }
+
+      .hero-logo-col img {
+        max-width: 220px;
+        margin: 0 auto;
+      }
+
+      .features-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .nav-links { display: none; }
+      .nav-cta   { display: none; }
+      .nav-hamburger { display: flex; }
+    }
+
+    @media (max-width: 540px) {
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-btns {
+        flex-direction: column;
+      }
+
+      .hero-btns .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .cta-btns {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-btns .btn {
+        width: 100%;
+        max-width: 280px;
+        justify-content: center;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      @keyframes float { 0%,100% { transform: none; } }
+      @keyframes pulse { 0%,100% { opacity: 1; } }
     }
   </style>
 </head>
 <body>
 
-<canvas id="star-canvas" aria-hidden="true"></canvas>
-<div class="scanlines" aria-hidden="true"></div>
+  <canvas id="star-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
 
-<!-- NAV -->
-<nav id="nav" role="navigation" aria-label="Main navigation">
-  <div class="container nav-inner">
-    <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
-      <img src="assets/logo.png" alt="XyvorraOS logo" width="38" height="38" />
-      <span class="nav-logo-text">Xyvorra<span>OS</span></span>
-    </a>
-    <ul class="nav-links" role="list">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="features.html">Features</a></li>
-      <li><a href="download.html">Download</a></li>
-      <li><a href="announcements.html">News</a></li>
-      <li><a href="gallery.html">Gallery</a></li>
-      <li><a href="forums.html">Forums</a></li>
-      <li><a href="community.html">Community</a></li>
-      <li><a href="about.html">About</a></li>
-      <li><a href="merch.html">Merch</a></li>
-    </ul>
-    <div class="nav-cta">
-      <span class="nav-version">v1.0.2</span>
-      <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
-      <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+  <!-- ── NAV ───────────────────────────────────────────── -->
+  <nav id="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+        <img src="assets/logo.png" alt="XyvorraOS logo" width="34" height="34" />
+        <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="index.html" class="active">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="download.html">Download</a></li>
+        <li><a href="announcements.html">News</a></li>
+        <li><a href="gallery.html">Gallery</a></li>
+        <li><a href="forums.html">Forums</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="merch.html">Merch</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <span class="nav-version">v1.0.2</span>
+        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
+        <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+      </div>
+
+      <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
     </div>
-    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
+  </nav>
+
+  <!-- Mobile nav drawer -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="download.html">Download</a>
+    <a href="announcements.html">News</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="forums.html">Forums</a>
+    <a href="community.html">Community</a>
+    <a href="about.html">About</a>
+    <a href="merch.html">Merch</a>
+    <div class="divider"></div>
+    <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+    <a href="download.html" class="btn btn-primary" style="margin-top:0.5rem;justify-content:center;">Download v1.0.2</a>
   </div>
-</nav>
-<div class="nav-mobile" id="nav-mobile">
-  <a href="index.html">Home</a>
-  <a href="features.html">Features</a>
-  <a href="download.html">Download</a>
-  <a href="announcements.html">News</a>
-  <a href="gallery.html">Gallery</a>
-  <a href="forums.html">Forums</a>
-  <a href="community.html">Community</a>
-  <a href="about.html">About</a>
-  <a href="merch.html">Merch</a>
-  <div class="divider"></div>
-  <span style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-muted);padding:0 0.75rem;">v1.0.2</span>
-  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
-  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
-</div>
 
-<main>
+  <main>
 
-  <!-- ── HERO ─────────────────────────────────────────── -->
-  <section style="padding-top: var(--nav-height); position: relative; overflow: hidden;">
-    <!-- Ambient glow -->
-    <div style="position:absolute;top:-10%;left:10%;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(26,79,160,0.12) 0%,transparent 70%);pointer-events:none;" aria-hidden="true"></div>
-    <div style="position:absolute;top:20%;right:5%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(112,41,99,0.1) 0%,transparent 70%);pointer-events:none;" aria-hidden="true"></div>
+    <!-- ── HERO ──────────────────────────────────────────── -->
+    <section class="hero-section" aria-labelledby="hero-heading">
+      <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
 
-    <div class="container">
-      <div class="hero-grid">
+      <div class="container">
+        <div class="hero-grid">
 
-        <!-- Left: text -->
-        <div>
-          <div class="hero-eyebrow">
-            <div class="badge badge-blue">
-              <span class="pulse-dot" aria-hidden="true"></span>
-              Active Development
+          <!-- Left: text -->
+          <div>
+            <div class="hero-badge-row reveal">
+              <div class="badge-active">
+                <div class="pulse-dot" aria-hidden="true"></div>
+                Alpha · Actively Maintained
+              </div>
+              <span class="badge-ver">v1.0.2</span>
             </div>
-            <span class="version-chip">v1.0.2</span>
-          </div>
 
-          <h1 class="reveal" style="font-size: clamp(2.2rem, 5vw, 3.8rem); line-height: 1.1; margin-bottom: 1rem;">
-            Built in the void.<br>
-            <span style="color: var(--blue-bright);">Shipped to the stars.</span>
-          </h1>
+            <h1 id="hero-heading" class="hero-h1 reveal reveal-delay-1">
+              Built in the void.<br>
+              <span class="accent">Shipped to the stars.</span>
+            </h1>
 
-          <div class="reveal reveal-delay-1" style="margin-bottom: 2rem;">
-            <p style="font-size: 1.1rem; color: var(--text-secondary); line-height: 1.8; max-width: 520px;">
-              XyvorraOS is a space-age Arch-based distro — no team, no corporate backing. Just one person, a love of sci-fi aesthetics, and a Linux class that spiraled into something real.
+            <p class="hero-sub-tagline reveal reveal-delay-1">The OS your spaceship deserves.</p>
+
+            <p class="hero-desc reveal reveal-delay-2">
+              XyvorraOS is an Arch-based distro built with space-age aesthetics.
             </p>
-          </div>
 
-          <div class="reveal reveal-delay-2" style="display: flex; flex-wrap: wrap; gap: 0.85rem; margin-bottom: 2.5rem;">
-            <a href="download.html" class="btn btn-primary btn-lg">Download Alpha</a>
-            <a href="features.html" class="btn btn-outline btn-lg">See Features</a>
-            <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" class="btn btn-outline btn-lg" target="_blank" rel="noopener">GitHub ↗</a>
-          </div>
-
-          <!-- Terminal -->
-          <div class="terminal reveal reveal-delay-3" style="max-width: 460px;">
-            <div class="terminal-bar">
-              <div class="terminal-dot"></div><div class="terminal-dot"></div><div class="terminal-dot"></div>
-              <span style="font-size:0.75rem;color:var(--text-muted);margin-left:auto;">xyvorra-shell — v1.0.2</span>
+            <div class="hero-btns reveal reveal-delay-2">
+              <a href="download.html" class="btn btn-primary btn-lg">Download v1.0.2</a>
+              <a href="features.html" class="btn btn-outline btn-lg">Explore Features</a>
+              <a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" class="btn btn-ghost btn-lg" target="_blank" rel="noopener">GitHub ↗</a>
             </div>
-            <div class="terminal-auto">
-              <div class="terminal-line"><span class="prompt">$ </span><span class="cmd">xyvorra-update</span></div>
-              <div class="terminal-line out">→ Checking for updates...</div>
-              <div class="terminal-line out">→ XyvorraOS v1.0.2 — current</div>
-              <div class="terminal-line"><span class="highlight">✦ No explosions. Good flight.</span></div>
+
+            <!-- Terminal -->
+            <div class="terminal reveal reveal-delay-3" role="region" aria-label="System status terminal">
+              <div class="terminal-bar">
+                <div class="term-dot term-dot-r" aria-hidden="true"></div>
+                <div class="term-dot term-dot-y" aria-hidden="true"></div>
+                <div class="term-dot term-dot-g" aria-hidden="true"></div>
+                <span class="term-label">xyvorra-command-center — v1.0.2</span>
+              </div>
+              <div class="terminal-body" aria-live="polite">
+                <div><span class="term-prompt">$ </span><span class="term-cmd">xyvorra-command-center --status</span></div>
+                <div class="term-out">→ Running pre-launch checks...</div>
+                <div class="term-row"><span class="term-check">✓</span><span class="term-sys-label">Hull integrity &nbsp;</span><span class="term-status">NOMINAL</span></div>
+                <div class="term-row"><span class="term-check">✓</span><span class="term-sys-label">Nav systems &nbsp;&nbsp;&nbsp;</span><span class="term-status">ONLINE</span></div>
+                <div class="term-row"><span class="term-check">✓</span><span class="term-sys-label">Shields &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="term-status">HOLDING</span></div>
+                <div class="term-row"><span class="term-check">✓</span><span class="term-sys-label">Theme core &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="term-status">LOADED</span></div>
+                <div class="term-row"><span class="term-check">✓</span><span class="term-sys-label">Hyperdrive &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="term-status">READY</span></div>
+                <div class="term-final">✦ System nominal. Void is quiet. Ready for jump.</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <!-- Right: logo -->
-        <div class="hero-logo-col reveal reveal-delay-2">
-          <img src="assets/logo.png" alt="XyvorraOS — Space-Age Linux" class="float-slow" />
-        </div>
+          <!-- Right: logo -->
+          <div class="hero-logo-col reveal reveal-delay-2">
+            <img src="assets/logo.png" alt="XyvorraOS — Space-Age Linux distro" />
+          </div>
 
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- ── Features quick-look ──────────────────────────── -->
-  <section class="section">
+    <div class="section-divider"></div>
+
+    <!-- ── FEATURES ───────────────────────────────────────── -->
+    <section class="section" aria-labelledby="features-heading">
+      <div class="container">
+        <div class="section-eyebrow reveal">What's on board</div>
+        <h2 id="features-heading" class="section-h2 reveal reveal-delay-1">
+          Here's some of what's already in the cargo bay —<br>with a lot more to come.
+        </h2>
+        <p class="section-desc reveal reveal-delay-1">Building it one piece at a time, the way it should be.</p>
+
+        <div class="features-grid">
+
+          <!-- Four Themes -->
+          <div class="feat-card reveal">
+            <div class="feat-card-top">
+              <div class="feat-icon" aria-hidden="true">
+                <!-- Replace src with your pixel art icon -->
+                <img src="assets/icons/icon-themes.png" alt="" />
+              </div>
+              <div class="feat-title">Four Themes</div>
+            </div>
+            <p class="feat-desc">Hand-crafted, not generated. Each one its own world.</p>
+            <div class="theme-swatches" aria-label="Theme colors">
+              <div class="swatch">
+                <div class="swatch-dot" style="background:#702963;" aria-hidden="true"></div>
+                <span class="swatch-name">Byzantium</span>
+              </div>
+              <div class="swatch">
+                <div class="swatch-dot" style="background:#049e47;" aria-hidden="true"></div>
+                <span class="swatch-name">Green Haze</span>
+              </div>
+              <div class="swatch">
+                <div class="swatch-dot" style="background:#001D30;border:1px solid #1a3a50;" aria-hidden="true"></div>
+                <span class="swatch-name">Black Pearl</span>
+              </div>
+              <div class="swatch">
+                <div class="swatch-dot" style="background:#65000B;" aria-hidden="true"></div>
+                <span class="swatch-name">Rosewood</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- First-Boot Wizard -->
+          <div class="feat-card reveal reveal-delay-1">
+            <div class="feat-card-top">
+              <div class="feat-icon" aria-hidden="true">
+                <img src="assets/icons/icon-wizard.png" alt="" />
+              </div>
+              <div class="feat-title">First-Boot Wizard</div>
+            </div>
+            <p class="feat-desc">Themes, packages, and layout from the get-go. No config files — a clean GUI that handles it all.</p>
+          </div>
+
+          <!-- Updates & Rollbacks -->
+          <div class="feat-card reveal reveal-delay-2">
+            <div class="feat-card-top">
+              <div class="feat-icon" aria-hidden="true">
+                <img src="assets/icons/icon-updates.png" alt="" />
+              </div>
+              <div class="feat-title">Updates &amp; Rollbacks</div>
+            </div>
+            <p class="feat-desc">One command handles both. Push a bad update? No panic — just roll it back. <span class="feat-mono">xyvorra-update</span> has you covered either way.</p>
+          </div>
+
+          <!-- Custom Installer -->
+          <div class="feat-card reveal reveal-delay-1">
+            <div class="feat-card-top">
+              <div class="feat-icon" aria-hidden="true">
+                <img src="assets/icons/icon-installer.png" alt="" />
+              </div>
+              <div class="feat-title">Custom Installer</div>
+            </div>
+            <p class="feat-desc">Full UEFI and BIOS support. Gotta keep the old ships flying too.</p>
+          </div>
+
+          <!-- Custom SDDM -->
+          <div class="feat-card reveal reveal-delay-2">
+            <div class="feat-card-top">
+              <div class="feat-icon" aria-hidden="true">
+                <img src="assets/icons/icon-sddm.png" alt="" />
+              </div>
+              <div class="feat-title">Custom SDDM</div>
+            </div>
+            <p class="feat-desc">Custom login themes because the first thing you see of the interior of your ship should look the part.</p>
+          </div>
+
+          <!-- Hyprland & KDE -->
+          <div class="feat-card reveal reveal-delay-3">
+            <div class="feat-card-top">
+              <div class="feat-icon" aria-hidden="true">
+                <img src="assets/icons/icon-desktop.png" alt="" />
+              </div>
+              <div class="feat-title">Hyprland &amp; KDE</div>
+            </div>
+            <p class="feat-desc">Support for both sides of the house — tiling and traditional, both welcome on this ship.</p>
+          </div>
+
+        </div>
+
+        <div class="reveal">
+          <a href="features.html" class="more-link">Full feature list + what's coming →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── COMMUNITY CTA ──────────────────────────────────── -->
+    <section class="cta-section" aria-labelledby="cta-heading">
+      <div class="container">
+        <div class="cta-eyebrow reveal">Join the crew</div>
+        <h2 id="cta-heading" class="cta-h2 reveal reveal-delay-1">The void is better with people in it.</h2>
+        <p class="cta-desc reveal reveal-delay-1">
+          Discord is mission control — polls, patch previews, bug reports, and people who actually get why you built your own OS.
+        </p>
+        <div class="cta-btns reveal reveal-delay-2">
+          <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-lg" target="_blank" rel="noopener">Join Discord ↗</a>
+          <a href="community.html" class="btn btn-outline btn-lg">Community hub</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer id="footer">
     <div class="container">
-      <div class="section-label" aria-hidden="true">What it does</div>
-      <h2 class="section-title reveal">A complete desktop experience.<br>Built from scratch.</h2>
-      <p class="section-desc reveal reveal-delay-1">One piece at a time — because that's what makes it fun. Here's what's in the ship already.</p>
+      <div class="footer-grid">
 
-      <div class="grid-3">
-        <div class="card card-blue reveal">
-          <div style="font-size:1.5rem;margin-bottom:.75rem" aria-hidden="true">🎨</div>
-          <h3>Four Themes</h3>
-          <p class="text-muted" style="margin-top:.4rem;font-size:.92rem;">Galactic Byzantium · Quantum Verdance · Void Pearl · Rosefire Eclipse. Hand-crafted, not generated.</p>
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+            <img src="assets/logo.png" alt="" width="30" height="30" aria-hidden="true" />
+            <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+          </a>
+          <p>Built in the void. Shipped to the stars.<br>One person. One distro. Endless space.</p>
         </div>
-        <div class="card card-blue reveal reveal-delay-1">
-          <div style="font-size:1.5rem;margin-bottom:.75rem" aria-hidden="true">🚀</div>
-          <h3>First-Boot Wizard</h3>
-          <p class="text-muted" style="margin-top:.4rem;font-size:.92rem;">Pick your theme, packages, and setup right from the first screen.</p>
+
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="features.html">Features</a></li>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="announcements.html">News</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="merch.html">Merch</a></li>
+          </ul>
         </div>
-        <div class="card card-blue reveal reveal-delay-2">
-          <div style="font-size:1.5rem;margin-bottom:.75rem" aria-hidden="true">🔄</div>
-          <h3>One-Command Updates</h3>
-          <p class="text-muted" style="margin-top:.4rem;font-size:.92rem;"><span class="mono" style="color:var(--blue-bright);font-size:.85rem;">xyvorra-update</span> pulls everything. Rollbacks included.</p>
+
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="forums.html">Forums</a></li>
+            <li><a href="community.html">Hub</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
+          </ul>
         </div>
-        <div class="card card-blue reveal reveal-delay-1">
-          <div style="font-size:1.5rem;margin-bottom:.75rem" aria-hidden="true">⚙️</div>
-          <h3>Custom Installer</h3>
-          <p class="text-muted" style="margin-top:.4rem;font-size:.92rem;">Full UEFI and BIOS support. Old hardware deserves love too.</p>
+
+        <div class="footer-col">
+          <h4>Project</h4>
+          <ul>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" target="_blank" rel="noopener">Issue Tracker ↗</a></li>
+          </ul>
         </div>
-        <div class="card card-blue reveal reveal-delay-2">
-          <div style="font-size:1.5rem;margin-bottom:.75rem" aria-hidden="true">🔐</div>
-          <h3>Custom Login Screens</h3>
-          <p class="text-muted" style="margin-top:.4rem;font-size:.92rem;">Custom SDDM themes — because the first thing you see should look good.</p>
-        </div>
-        <div class="card card-blue reveal reveal-delay-3">
-          <div style="font-size:1.5rem;margin-bottom:.75rem" aria-hidden="true">🖱️</div>
-          <h3>Multiple Desktops</h3>
-          <p class="text-muted" style="margin-top:.4rem;font-size:.92rem;">KDE Plasma, Hyprland, Sway, Openbox — all on the roadmap.</p>
-        </div>
+
       </div>
 
-      <div style="text-align:center;margin-top:2.5rem;" class="reveal">
-        <a href="features.html" class="btn btn-outline">Full feature list + roadmap →</a>
+      <div class="footer-bottom">
+        <span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2 · Built in the void. Shipped to the stars.</span>
+        <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
       </div>
     </div>
-  </section>
+  </footer>
 
-  <!-- ── Community CTA ─────────────────────────────────── -->
-  <section class="section" style="background:rgba(0,29,48,0.5);border-top:1px solid var(--border-blue);border-bottom:1px solid var(--border-blue);">
-    <div class="container" style="text-align:center;">
-      <div class="section-label" style="justify-content:center;" aria-hidden="true">Join the crew</div>
-      <h2 class="reveal">The void is better with people in it.</h2>
-      <p class="reveal reveal-delay-1" style="color:var(--text-secondary);margin:1rem auto 2.5rem;max-width:480px;">
-        Discord is where the real talk happens — polls, patch previews, bug chats, and general space-nerd conversation.
-      </p>
-      <div class="reveal reveal-delay-2" style="display:flex;flex-wrap:wrap;gap:1rem;justify-content:center;">
-        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-lg" target="_blank" rel="noopener">Join Discord ↗</a>
-        <a href="community.html" class="btn btn-outline btn-lg">Community hub</a>
-      </div>
-    </div>
-  </section>
+  <!-- ── SCRIPTS ─────────────────────────────────────────── -->
+  <script src="js/animations.js"></script>
 
-</main>
+  <script>
+    /* ── Hamburger / mobile nav ── */
+    const toggle = document.getElementById('nav-toggle');
+    const mobileNav = document.getElementById('nav-mobile');
 
-<!-- FOOTER -->
-<footer id="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand">
-        <a href="index.html" class="nav-logo" style="margin-bottom:.75rem;display:inline-flex;">
-          <img src="assets/logo.png" alt="" width="32" height="32" aria-hidden="true" />
-          <span class="nav-logo-text">Xyvorra<span>OS</span></span>
-        </a>
-        <p>Built in the void. Shipped to the stars. One person. One distro. Endless space.</p>
-      </div>
-      <div class="footer-col">
-        <h4>Product</h4>
-        <ul>
-          <li><a href="features.html">Features</a></li>
-          <li><a href="download.html">Download</a></li>
-          <li><a href="announcements.html">News</a></li>
-          <li><a href="gallery.html">Gallery</a></li>
-          <li><a href="merch.html">Merch</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Community</h4>
-        <ul>
-          <li><a href="forums.html">Forums</a></li>
-          <li><a href="community.html">Hub</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h4>Project</h4>
-        <ul>
-          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li>
-          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li>
-          <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" target="_blank" rel="noopener">Issue Tracker ↗</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2 · Built in the void. Shipped to the stars.</span>
-      <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
-    </div>
-  </div>
-</footer>
+    toggle.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+      mobileNav.setAttribute('aria-hidden', !open);
+    });
 
-<script src="js/animations.js"></script>
-<script src="js/nav.js"></script>
+    /* Close mobile nav when a link is clicked */
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        mobileNav.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    /* ── Scroll reveal ── */
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          revealObserver.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    /* ── Star canvas (lightweight, ~50 stars) ── */
+    const canvas = document.getElementById('star-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let stars = [];
+
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function initStars() {
+        stars = Array.from({ length: 55 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          o: Math.random() * 0.6 + 0.2,
+          speed: Math.random() * 0.3 + 0.05
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+          s.o += s.speed * 0.02;
+          if (s.o > 0.8) s.speed = -Math.abs(s.speed);
+          if (s.o < 0.1) s.speed =  Math.abs(s.speed);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(180, 210, 255, ${s.o})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      initStars();
+      draw();
+      window.addEventListener('resize', () => { resize(); initStars(); });
+    }
+  </script>
+
 </body>
 </html>
