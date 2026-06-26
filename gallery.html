@@ -1,161 +1,1131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Gallery — XyvorraOS</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" /><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <meta name="description" content="Screenshots, themes, fan art, setups, and wallpapers from the XyvorraOS community." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/main.css" /><link rel="stylesheet" href="css/animations.css" />
+
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+
   <style>
-    .gallery-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:1.25rem; }
-    .gallery-item { border-radius:var(--radius-lg); overflow:hidden; border:1px solid var(--border-subtle); background:var(--void-pearl-mid); transition:transform .2s,border-color .2s; }
-    .gallery-item:hover { transform:translateY(-3px); border-color:rgba(46,109,212,0.5); }
-    .gallery-thumb { width:100%; aspect-ratio:16/10; overflow:hidden; background:var(--void-pearl); }
-    .gallery-thumb img { width:100%; height:100%; object-fit:cover; display:block; }
-    .gallery-caption { padding:.85rem 1rem; display:flex; align-items:center; justify-content:space-between; }
-    .gallery-caption span { font-size:.88rem; color:var(--text-secondary); }
-    .gallery-tag { font-family:var(--font-mono); font-size:.72rem; color:var(--text-muted); }
-    .empty-slot { border:1px dashed rgba(255,255,255,0.08); border-radius:var(--radius-lg); aspect-ratio:16/10; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:.5rem; color:var(--text-muted); font-size:.85rem; }
+    /* ─── RESET & BASE ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    :root {
+      --nav-height:    60px;
+      --bg-base:       #0a0d14;
+      --bg-card:       #0d1520;
+      --border-dim:    #1a2535;
+      --border-blue:   #1a4fa0;
+      --blue-bright:   #5ba4ff;
+      --blue-dim:      #0d1f3a;
+      --purple-bright: #a67fff;
+      --purple-dim:    #1a0f2e;
+      --purple-border: #3d2070;
+      --byzantium:     #702163;
+      --text-primary:  #f0f4ff;
+      --text-secondary:#8fa5be;
+      --text-muted:    #5a7090;
+      --text-nav:      #7a8fa8;
+      --font-mono:     'JetBrains Mono', 'Fira Code', monospace;
+      --font-body:     'Inter', system-ui, sans-serif;
+      --font-display:  'Exo 2', system-ui, sans-serif;
+      --radius-card:   8px;
+      --radius-btn:    7px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      background: var(--bg-base);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    img { max-width: 100%; height: auto; display: block; }
+
+    /* ─── LAYOUT ────────────────────────────────────────── */
+    .container {
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ─── NAV ───────────────────────────────────────────── */
+    #nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      height: var(--nav-height);
+      background: rgba(10, 13, 20, 0.96);
+      border-bottom: 1px solid var(--border-dim);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      gap: 1rem;
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .nav-logo img { width: 34px; height: 34px; border-radius: 6px; }
+
+    .nav-logo-text {
+      font-family: var(--font-display);
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text-primary);
+      letter-spacing: -0.3px;
+    }
+
+    .nav-logo-text span { color: var(--blue-bright); }
+
+    .nav-links {
+      display: flex;
+      list-style: none;
+      margin: 0; padding: 0;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      color: var(--text-nav);
+      text-decoration: none;
+      padding: 0 11px;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover  { color: var(--text-primary); }
+    .nav-links a.active { color: var(--text-primary); }
+
+    .nav-cta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .nav-version {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--blue-bright);
+      background: var(--blue-dim);
+      border: 1px solid var(--border-blue);
+      border-radius: 999px;
+      padding: 3px 10px;
+    }
+
+    /* ─── BUTTONS ───────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: var(--radius-btn);
+      transition: opacity 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+      border: none;
+    }
+
+    .btn:hover { opacity: 0.82; }
+    .btn-sm { font-size: 12px; padding: 5px 13px; }
+    .btn-lg { font-size: 14px; padding: 10px 22px; }
+
+    .btn-primary {
+      background: var(--border-blue);
+      color: #fff;
+      border: 1px solid var(--border-blue);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid #2a3f5f;
+    }
+
+    .btn-byzantium {
+      background: var(--byzantium);
+      color: #f0d0f0;
+      border: 1px solid var(--byzantium);
+    }
+
+    /* ─── HAMBURGER ─────────────────────────────────────── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 6px;
+      margin-left: auto;
+    }
+
+    .nav-hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: var(--text-nav);
+      border-radius: 2px;
+      transition: all 0.25s;
+    }
+
+    /* ─── MOBILE NAV ────────────────────────────────────── */
+    .nav-mobile {
+      display: none;
+      position: fixed;
+      top: var(--nav-height);
+      left: 0; right: 0;
+      z-index: 99;
+      background: rgba(10, 13, 20, 0.98);
+      border-bottom: 1px solid var(--border-dim);
+      padding: 1rem 1.5rem 1.5rem;
+      flex-direction: column;
+    }
+
+    .nav-mobile.open { display: flex; }
+
+    .nav-mobile a {
+      font-size: 15px;
+      color: var(--text-nav);
+      text-decoration: none;
+      padding: 11px 0;
+      border-bottom: 1px solid var(--border-dim);
+      transition: color 0.2s;
+    }
+
+    .nav-mobile a:last-of-type { border-bottom: none; }
+    .nav-mobile a:hover { color: var(--text-primary); }
+    .nav-mobile .divider { height: 1px; background: var(--border-dim); margin: 0.75rem 0; }
+
+    /* ─── STAR CANVAS & SCANLINES ───────────────────────── */
+    #star-canvas {
+      position: fixed; inset: 0;
+      z-index: 0; pointer-events: none; opacity: 0.45;
+    }
+
+    .scanlines {
+      position: fixed; inset: 0; z-index: 1; pointer-events: none;
+      background: repeating-linear-gradient(
+        0deg, transparent, transparent 2px,
+        rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px
+      );
+    }
+
+    main, #nav, #footer { position: relative; z-index: 2; }
+
+    /* ─── PAGE HERO ─────────────────────────────────────── */
+    .page-hero {
+      padding-top: var(--nav-height);
+      padding-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .page-hero .container { padding-top: 3rem; }
+
+    .hero-glow {
+      position: absolute; border-radius: 50%; pointer-events: none;
+    }
+
+    .hero-glow-1 {
+      top: -60px; left: 5%; width: 420px; height: 420px;
+      background: radial-gradient(circle, rgba(26,79,160,0.13) 0%, transparent 70%);
+    }
+
+    .hero-glow-2 {
+      top: 0; right: 5%; width: 300px; height: 300px;
+      background: radial-gradient(circle, rgba(112,33,99,0.1) 0%, transparent 70%);
+    }
+
+    .page-label {
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--blue-bright);
+      letter-spacing: 1.5px;
+      margin-bottom: 1rem;
+    }
+
+    .page-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      line-height: 1.1;
+      letter-spacing: -0.5px;
+      margin-bottom: 1rem;
+    }
+
+    .page-h1 .accent { color: var(--blue-bright); }
+
+    .page-sub {
+      font-size: 1.05rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      max-width: 520px;
+    }
+
+    /* ─── FILTER STRIP ──────────────────────────────────── */
+    .filter-strip {
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border-dim);
+      background: rgba(13,21,32,0.3);
+    }
+
+    .filter-strip .container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .filter-btn {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: var(--radius-btn);
+      border: 1px solid #2a3f5f;
+      background: transparent;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: var(--font-body);
+    }
+
+    .filter-btn:hover { border-color: var(--border-blue); color: var(--text-primary); }
+
+    .filter-btn.active {
+      background: var(--border-blue);
+      border-color: var(--border-blue);
+      color: #fff;
+    }
+
+    /* ─── GALLERY SECTION ───────────────────────────────── */
+    .gallery-section { padding: 3rem 0 4rem; }
+
+    /* ─── GALLERY GRID ──────────────────────────────────── */
+    /*
+      ╔══════════════════════════════════════════════════════╗
+      ║  HOW TO ADD GALLERY IMAGES                           ║
+      ║                                                      ║
+      ║  1. Drop your image in: assets/gallery/              ║
+      ║  2. Copy one .gallery-item block below               ║
+      ║  3. Paste it inside #gallery-grid                    ║
+      ║  4. Update: src, alt, caption text, data-category    ║
+      ║  5. Add multiple categories separated by spaces      ║
+      ║     e.g. data-category="screenshots themes"          ║
+      ║                                                      ║
+      ║  Valid data-category values:                         ║
+      ║    screenshots  → desktop screenshots of the OS      ║
+      ║    themes       → theme showcases                    ║
+      ║    fanart       → fan art                            ║
+      ║    setups       → hardware / desk setups             ║
+      ║    wallpapers   → wallpapers                         ║
+      ║                                                      ║
+      ║  Example item block to copy:                         ║
+      ║                                                      ║
+      ║  <div class="gallery-item"                           ║
+      ║       data-category="screenshots"                    ║
+      ║       data-caption="Void Pearl — desktop">           ║
+      ║    <div class="gallery-thumb">                       ║
+      ║      <img src="assets/gallery/my-shot.png"           ║
+      ║           alt="Void Pearl desktop screenshot" />     ║
+      ║    </div>                                            ║
+      ║    <div class="gallery-caption">                     ║
+      ║      <span>Void Pearl — desktop</span>               ║
+      ║      <span class="gallery-tag">screenshot</span>     ║
+      ║    </div>                                            ║
+      ║  </div>                                              ║
+      ╚══════════════════════════════════════════════════════╝
+    */
+
+    .gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .gallery-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-dim);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+
+    .gallery-item:hover {
+      transform: translateY(-3px);
+      border-color: #2a4a6f;
+    }
+
+    .gallery-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: #080c12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .gallery-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s;
+    }
+
+    .gallery-item:hover .gallery-thumb img { transform: scale(1.03); }
+
+    .gallery-caption {
+      padding: 10px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .gallery-caption span {
+      font-size: 12px;
+      color: var(--text-secondary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gallery-tag {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--text-muted);
+      flex-shrink: 0;
+    }
+
+    /* ─── EMPTY STATE ───────────────────────────────────── */
+    .gallery-empty {
+      padding: 5rem 2rem;
+      text-align: center;
+    }
+
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1.25rem;
+      opacity: 0.4;
+    }
+
+    .empty-title {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .empty-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      max-width: 360px;
+      margin: 0 auto 1.75rem;
+      line-height: 1.7;
+    }
+
+    /* ─── SUBMISSION GUIDE ──────────────────────────────── */
+    .submit-card {
+      margin-top: 3rem;
+      padding: 1.5rem 1.75rem;
+      max-width: 520px;
+      background: rgba(112, 33, 99, 0.07);
+      border: 1px solid rgba(112, 33, 99, 0.3);
+      border-radius: var(--radius-card);
+    }
+
+    .submit-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 0.85rem;
+    }
+
+    .submit-steps {
+      list-style: none;
+      margin: 0; padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 1.25rem;
+    }
+
+    .submit-steps li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    .submit-step-num {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: rgba(112, 33, 99, 0.2);
+      border: 1px solid rgba(112, 33, 99, 0.4);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700;
+      color: #e08cd0;
+      flex-shrink: 0;
+    }
+
+    .submit-steps strong { color: #c8d8f0; }
+
+    /* ─── LIGHTBOX ──────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 200;
+      background: rgba(5, 8, 14, 0.94);
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox-inner {
+      position: relative;
+      max-width: 1100px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lightbox-img-wrap {
+      width: 100%;
+      max-height: 75vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      border: 1px solid var(--border-dim);
+    }
+
+    .lightbox-img-wrap img {
+      max-width: 100%;
+      max-height: 75vh;
+      object-fit: contain;
+      display: block;
+    }
+
+    .lightbox-caption {
+      font-size: 13px;
+      color: var(--text-secondary);
+      text-align: center;
+    }
+
+    .lightbox-controls {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .lb-btn {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: rgba(13, 21, 32, 0.9);
+      border: 1px solid var(--border-dim);
+      color: var(--text-secondary);
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      font-family: var(--font-body);
+    }
+
+    .lb-btn:hover { border-color: var(--border-blue); color: var(--text-primary); }
+
+    .lb-close {
+      position: absolute;
+      top: -0.5rem;
+      right: 0;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: rgba(13,21,32,0.9);
+      border: 1px solid var(--border-dim);
+      color: var(--text-secondary);
+      font-size: 18px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      line-height: 1;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .lb-close:hover { border-color: var(--border-blue); color: var(--text-primary); }
+
+    .lb-counter {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* ─── FOOTER ────────────────────────────────────────── */
+    #footer {
+      padding: 3rem 0 1.5rem;
+      border-top: 1px solid var(--border-dim);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .footer-brand p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-top: 0.75rem;
+      max-width: 220px;
+    }
+
+    .footer-col h4 {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 0.9rem;
+    }
+
+    .footer-col ul {
+      list-style: none; margin: 0; padding: 0;
+      display: flex; flex-direction: column; gap: 0.5rem;
+    }
+
+    .footer-col a {
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover { color: var(--text-secondary); }
+
+    .footer-bottom {
+      border-top: 1px solid var(--border-dim);
+      padding-top: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 11px;
+      color: #2e4055;
+    }
+
+    .footer-bottom a { color: #3a5570; text-decoration: none; }
+    .footer-bottom a:hover { color: var(--text-muted); }
+
+    /* ─── REVEAL ────────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .reveal.visible { opacity: 1; transform: none; }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+
+    /* ─── RESPONSIVE ────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 760px) {
+      .nav-links     { display: none; }
+      .nav-cta       { display: none; }
+      .nav-hamburger { display: flex; }
+      .footer-grid   { grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    }
+
+    @media (max-width: 520px) {
+      .gallery-grid { grid-template-columns: 1fr; }
+      .footer-grid  { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .gallery-item { transition: none; }
+      .gallery-thumb img { transition: none; }
+    }
   </style>
 </head>
 <body>
-<canvas id="star-canvas" aria-hidden="true"></canvas>
-<div class="scanlines" aria-hidden="true"></div>
 
-<nav id="nav" role="navigation" aria-label="Main navigation">
-  <div class="container nav-inner">
-    <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="XyvorraOS" width="38" height="38" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a>
-    <ul class="nav-links" role="list">
-      <li><a href="index.html">Home</a></li><li><a href="features.html">Features</a></li>
-      <li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li>
-      <li><a href="gallery.html">Gallery</a></li><li><a href="forums.html">Forums</a></li>
-      <li><a href="community.html">Community</a></li><li><a href="about.html">About</a></li><li><a href="merch.html">Merch</a></li>
-    </ul>
-    <div class="nav-cta"><span class="nav-version">v1.0.2</span><a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a><a href="download.html" class="btn btn-primary btn-sm">Download</a></div>
-    <button class="nav-hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <canvas id="star-canvas" aria-hidden="true"></canvas>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <!-- ── NAV ──────────────────────────────────────────────── -->
+  <nav id="nav" role="navigation" aria-label="Main navigation">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+        <img src="assets/logo.png" alt="XyvorraOS logo" width="34" height="34" />
+        <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+      </a>
+
+      <ul class="nav-links" role="list">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="features.html">Features</a></li>
+        <li><a href="download.html">Download</a></li>
+        <li><a href="announcements.html">News</a></li>
+        <li><a href="gallery.html" class="active">Gallery</a></li>
+        <li><a href="forums.html">Forums</a></li>
+        <li><a href="community.html">Community</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="merch.html">Merch</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <span class="nav-version">v1.0.2</span>
+        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-outline btn-sm" target="_blank" rel="noopener">Discord</a>
+        <a href="download.html" class="btn btn-primary btn-sm">Download</a>
+      </div>
+
+      <button class="nav-hamburger" id="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile nav -->
+  <div class="nav-mobile" id="nav-mobile" aria-hidden="true">
+    <a href="index.html">Home</a>
+    <a href="features.html">Features</a>
+    <a href="download.html">Download</a>
+    <a href="announcements.html">News</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="forums.html">Forums</a>
+    <a href="community.html">Community</a>
+    <a href="about.html">About</a>
+    <a href="merch.html">Merch</a>
+    <div class="divider"></div>
+    <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
+    <a href="download.html" class="btn btn-primary" style="margin-top:0.5rem;justify-content:center;">Download v1.0.2</a>
   </div>
-</nav>
-<div class="nav-mobile" id="nav-mobile">
-  <a href="index.html">Home</a><a href="features.html">Features</a><a href="download.html">Download</a>
-  <a href="announcements.html">News</a><a href="gallery.html">Gallery</a><a href="forums.html">Forums</a>
-  <a href="community.html">Community</a><a href="about.html">About</a><a href="merch.html">Merch</a>
-  <div class="divider"></div>
-  <a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a>
-  <a href="download.html" class="btn btn-primary">Download XyvorraOS</a>
-</div>
 
-<main>
-  <section class="page-hero">
-    <div class="container">
-      <p class="page-hero-label">// gallery</p>
-      <h1 class="reveal">Show us<br><span style="color:var(--blue-bright);">your space.</span></h1>
-      <p class="reveal reveal-delay-1" style="color:var(--text-secondary);max-width:500px;margin-top:1rem;font-size:1.05rem;">
-        Screenshots, setups, fan art, and cool ideas. Submissions go through Discord for review before they appear here.
-      </p>
-    </div>
-  </section>
-
-  <!-- Filter -->
-  <section class="section--sm" style="padding-top:0;">
-    <div class="container">
-      <div style="display:flex;flex-wrap:wrap;gap:.5rem;" role="tablist" aria-label="Gallery filters">
-        <button class="btn btn-primary btn-sm gallery-filter active" data-filter="all" role="tab" aria-selected="true">All</button>
-        <button class="btn btn-outline btn-sm gallery-filter" data-filter="screenshots" role="tab" aria-selected="false">Screenshots</button>
-        <button class="btn btn-outline btn-sm gallery-filter" data-filter="themes" role="tab" aria-selected="false">Themes</button>
-        <button class="btn btn-outline btn-sm gallery-filter" data-filter="fanart" role="tab" aria-selected="false">Fan Art</button>
-        <button class="btn btn-outline btn-sm gallery-filter" data-filter="setups" role="tab" aria-selected="false">Setups</button>
+  <!-- ── LIGHTBOX ───────────────────────────────────────────── -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Image viewer">
+    <div class="lightbox-inner">
+      <button class="lb-close" id="lb-close" aria-label="Close image viewer">✕</button>
+      <div class="lightbox-img-wrap">
+        <img id="lb-img" src="" alt="" />
+      </div>
+      <div class="lb-caption" id="lb-caption"></div>
+      <div class="lightbox-controls">
+        <button class="lb-btn" id="lb-prev" aria-label="Previous image">←</button>
+        <span class="lb-counter" id="lb-counter"></span>
+        <button class="lb-btn" id="lb-next" aria-label="Next image">→</button>
       </div>
     </div>
-  </section>
+  </div>
 
-  <section class="section" style="padding-top:1.5rem;">
-    <div class="container">
+  <main>
 
-      <!--
-        ══════════════════════════════════════════════════════
-        HOW TO ADD GALLERY IMAGES:
-        1. Submit in Discord for approval
-        2. Once approved, drop the image in assets/
-        3. Copy this block and fill in the details:
-
-        <div class="gallery-item" data-category="screenshots">
-          <div class="gallery-thumb">
-            <img src="assets/your-image.png" alt="Description of what's shown" />
-          </div>
-          <div class="gallery-caption">
-            <span>Caption text here</span>
-            <span class="gallery-tag">screenshot</span>
-          </div>
-        </div>
-
-        data-category options: screenshots  themes  fanart  setups
-        ══════════════════════════════════════════════════════
-      -->
-
-      <div class="gallery-grid" id="gallery-grid">
-
-        <!-- Add approved images here — empty for now -->
-
-      </div>
-
-      <!-- Empty state -->
-      <div id="gallery-empty" style="padding:4rem 2rem;text-align:center;">
-        <div style="font-size:2.5rem;margin-bottom:1rem;" aria-hidden="true">🛸</div>
-        <h3 style="font-size:1.1rem;margin-bottom:.5rem;">Gallery is filling up</h3>
-        <p class="text-muted" style="font-size:.92rem;max-width:380px;margin:0 auto 1.5rem;">
-          Screenshots, setups, and fan art will appear here as they get submitted and approved through Discord.
+    <!-- ── PAGE HERO ─────────────────────────────────────── -->
+    <section class="page-hero" aria-labelledby="page-heading">
+      <div class="hero-glow hero-glow-1" aria-hidden="true"></div>
+      <div class="hero-glow hero-glow-2" aria-hidden="true"></div>
+      <div class="container">
+        <p class="page-label reveal">// gallery</p>
+        <h1 id="page-heading" class="page-h1 reveal reveal-delay-1">
+          Show us <span class="accent">your space.</span>
+        </h1>
+        <p class="page-sub reveal reveal-delay-2">
+          Screenshots, setups, fan art, themes, and wallpapers from the crew. Submit through Discord — if it fits the vibe, it goes up here.
         </p>
-        <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-primary" target="_blank" rel="noopener">Submit your screenshot on Discord ↗</a>
       </div>
+    </section>
 
-      <!-- Submission guide -->
-      <div class="card reveal" style="margin-top:2.5rem;max-width:540px;border-color:rgba(112,41,99,0.25);background:rgba(112,41,99,0.05);">
-        <strong style="font-size:.95rem;">How to get featured</strong>
-        <ol style="margin-top:.75rem;padding-left:1.25rem;display:flex;flex-direction:column;gap:.5rem;font-size:.88rem;color:var(--text-secondary);">
-          <li>Join the Discord server</li>
-          <li>Post your screenshot or art in the <strong style="color:var(--text-primary);">#gallery</strong> channel</li>
-          <li>Wait for approval — if it fits the vibe, it goes up here</li>
-        </ol>
-        <div style="margin-top:1rem;display:flex;gap:.75rem;flex-wrap:wrap;">
-          <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" target="_blank" rel="noopener">Join Discord ↗</a>
+    <!-- ── FILTER STRIP ───────────────────────────────────── -->
+    <div class="filter-strip" role="group" aria-label="Filter gallery by category">
+      <div class="container">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="screenshots">Screenshots</button>
+        <button class="filter-btn" data-filter="themes">Themes</button>
+        <button class="filter-btn" data-filter="fanart">Fan Art</button>
+        <button class="filter-btn" data-filter="setups">Setups</button>
+        <button class="filter-btn" data-filter="wallpapers">Wallpapers</button>
+      </div>
+    </div>
+
+    <!-- ── GALLERY GRID ───────────────────────────────────── -->
+    <section class="gallery-section" aria-label="Gallery">
+      <div class="container">
+
+        <!--
+        ╔══════════════════════════════════════════════════════╗
+        ║  HOW TO ADD GALLERY IMAGES                           ║
+        ║                                                      ║
+        ║  1. Drop your image in: assets/gallery/              ║
+        ║  2. Copy one .gallery-item block                     ║
+        ║  3. Paste it inside #gallery-grid (newest first)     ║
+        ║  4. Update src, alt, caption text, data-category     ║
+        ║                                                      ║
+        ║  data-category values (space-separated for multi):   ║
+        ║    screenshots  → desktop OS screenshots             ║
+        ║    themes       → theme showcases                    ║
+        ║    fanart       → fan art                            ║
+        ║    setups       → hardware / desk setups             ║
+        ║    wallpapers   → wallpapers                         ║
+        ║                                                      ║
+        ║  Example:                                            ║
+        ║  <div class="gallery-item"                           ║
+        ║       data-category="screenshots themes"             ║
+        ║       data-caption="Void Pearl — desktop">           ║
+        ║    <div class="gallery-thumb">                       ║
+        ║      <img src="assets/gallery/void-desktop.png"      ║
+        ║           alt="Void Pearl desktop screenshot" />     ║
+        ║    </div>                                            ║
+        ║    <div class="gallery-caption">                     ║
+        ║      <span>Void Pearl — desktop</span>               ║
+        ║      <span class="gallery-tag">screenshot</span>     ║
+        ║    </div>                                            ║
+        ║  </div>                                              ║
+        ╚══════════════════════════════════════════════════════╝
+        -->
+
+        <div class="gallery-grid" id="gallery-grid">
+          <!-- Gallery images go here — add newest first -->
+        </div>
+
+        <!-- Empty state — hidden automatically once images are added -->
+        <div class="gallery-empty" id="gallery-empty">
+          <div class="empty-icon" aria-hidden="true">✦</div>
+          <div class="empty-title">The hangar is empty for now.</div>
+          <p class="empty-desc">
+            Screenshots, setups, fan art, and wallpapers will appear here as they get submitted and approved through Discord.
+          </p>
+          <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-primary btn-lg" target="_blank" rel="noopener">
+            Submit on Discord ↗
+          </a>
+        </div>
+
+        <!-- Submission guide -->
+        <div class="submit-card reveal">
+          <div class="submit-title">How to get featured</div>
+          <ul class="submit-steps">
+            <li>
+              <span class="submit-step-num">1</span>
+              <span>Join the <strong>Discord server</strong> if you're not already in.</span>
+            </li>
+            <li>
+              <span class="submit-step-num">2</span>
+              <span>Post your screenshot, art, or setup in the <strong>#gallery</strong> channel.</span>
+            </li>
+            <li>
+              <span class="submit-step-num">3</span>
+              <span>If it fits the vibe, it gets approved and added here. Credit included.</span>
+            </li>
+          </ul>
+          <a href="https://discord.gg/8bYwUNb8ZS" class="btn btn-byzantium btn-sm" target="_blank" rel="noopener">
+            Join Discord ↗
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── FOOTER ────────────────────────────────────────────── -->
+  <footer id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="nav-logo" aria-label="XyvorraOS home">
+            <img src="assets/logo.png" alt="" width="30" height="30" aria-hidden="true" />
+            <span class="nav-logo-text">Xyvorra<span>OS</span></span>
+          </a>
+          <p>Built in the void. Shipped to the stars.<br>One person. One distro. Endless space.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul>
+            <li><a href="features.html">Features</a></li>
+            <li><a href="download.html">Download</a></li>
+            <li><a href="announcements.html">News</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+            <li><a href="merch.html">Merch</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Community</h4>
+          <ul>
+            <li><a href="forums.html">Forums</a></li>
+            <li><a href="community.html">Hub</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Project</h4>
+          <ul>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li>
+            <li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/issues" target="_blank" rel="noopener">Issue Tracker ↗</a></li>
+          </ul>
         </div>
       </div>
-
+      <div class="footer-bottom">
+        <span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2 · Built in the void. Shipped to the stars.</span>
+        <span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span>
+      </div>
     </div>
-  </section>
-</main>
+  </footer>
 
-<footer id="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-brand"><a href="index.html" class="nav-logo" style="margin-bottom:.75rem;display:inline-flex;"><img src="assets/logo.png" alt="" width="32" height="32" aria-hidden="true" /><span class="nav-logo-text">Xyvorra<span>OS</span></span></a><p>Built in the void. Shipped to the stars.</p></div>
-      <div class="footer-col"><h4>Product</h4><ul><li><a href="features.html">Features</a></li><li><a href="download.html">Download</a></li><li><a href="announcements.html">News</a></li><li><a href="gallery.html">Gallery</a></li></ul></div>
-      <div class="footer-col"><h4>Community</h4><ul><li><a href="forums.html">Forums</a></li><li><a href="community.html">Hub</a></li><li><a href="about.html">About</a></li><li><a href="https://discord.gg/8bYwUNb8ZS" target="_blank" rel="noopener">Discord ↗</a></li></ul></div>
-      <div class="footer-col"><h4>Project</h4><ul><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates" target="_blank" rel="noopener">GitHub ↗</a></li><li><a href="https://github.com/PixelatedPrelude/XyvorraOS-Updates/releases" target="_blank" rel="noopener">Releases ↗</a></li></ul></div>
-    </div>
-    <div class="footer-bottom"><span>© 2025 Pixelated Prelude · XyvorraOS v1.0.2</span><span>Based on <a href="https://archlinux.org" target="_blank" rel="noopener">Arch Linux</a></span></div>
-  </div>
-</footer>
-<script src="js/animations.js"></script><script src="js/nav.js"></script>
-<script>
-  const filterBtns = document.querySelectorAll('.gallery-filter');
-  const items = document.querySelectorAll('.gallery-item');
-  const empty = document.getElementById('gallery-empty');
+  <!-- ── SCRIPTS ───────────────────────────────────────────── -->
+  <script src="js/animations.js"></script>
 
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const filter = btn.dataset.filter;
-      filterBtns.forEach(b => { b.classList.remove('btn-primary','active'); b.classList.add('btn-outline'); b.setAttribute('aria-selected','false'); });
-      btn.classList.remove('btn-outline'); btn.classList.add('btn-primary','active'); btn.setAttribute('aria-selected','true');
-      let visible = 0;
-      items.forEach(item => {
-        const cats = item.dataset.category || '';
-        const show = filter === 'all' || cats.includes(filter);
-        item.style.display = show ? '' : 'none';
-        if (show) visible++;
-      });
-      if (empty) empty.style.display = visible === 0 ? '' : 'none';
+  <script>
+    /* ── Hamburger ── */
+    const toggle    = document.getElementById('nav-toggle');
+    const mobileNav = document.getElementById('nav-mobile');
+
+    toggle.addEventListener('click', () => {
+      const open = mobileNav.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open);
+      mobileNav.setAttribute('aria-hidden', !open);
     });
-  });
-</script>
-</body></html>
+
+    mobileNav.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileNav.classList.remove('open');
+        toggle.setAttribute('aria-expanded', 'false');
+        mobileNav.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    /* ── Scroll reveal ── */
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          revealObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.reveal').forEach(el => revealObs.observe(el));
+
+    /* ── Gallery filter + lightbox ── */
+    const grid        = document.getElementById('gallery-grid');
+    const emptyState  = document.getElementById('gallery-empty');
+    const filterBtns  = document.querySelectorAll('.filter-btn');
+    const lightbox    = document.getElementById('lightbox');
+    const lbImg       = document.getElementById('lb-img');
+    const lbCaption   = document.getElementById('lb-caption');
+    const lbCounter   = document.getElementById('lb-counter');
+    const lbClose     = document.getElementById('lb-close');
+    const lbPrev      = document.getElementById('lb-prev');
+    const lbNext      = document.getElementById('lb-next');
+
+    let currentFilter  = 'all';
+    let visibleItems   = [];
+    let currentIndex   = 0;
+
+    /* Build visible item list based on current filter */
+    function getVisible() {
+      return Array.from(document.querySelectorAll('.gallery-item')).filter(item => {
+        const cats = item.dataset.category || '';
+        return currentFilter === 'all' || cats.split(' ').includes(currentFilter);
+      });
+    }
+
+    /* Apply filter */
+    function applyFilter(filter) {
+      currentFilter = filter;
+      const allItems = document.querySelectorAll('.gallery-item');
+      let count = 0;
+
+      allItems.forEach(item => {
+        const cats = item.dataset.category || '';
+        const show = filter === 'all' || cats.split(' ').includes(filter);
+        item.style.display = show ? '' : 'none';
+        if (show) count++;
+      });
+
+      if (emptyState) emptyState.style.display = count === 0 ? '' : 'none';
+    }
+
+    /* Filter button clicks */
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        applyFilter(btn.dataset.filter);
+      });
+    });
+
+    /* Open lightbox */
+    function openLightbox(item, index) {
+      visibleItems = getVisible();
+      currentIndex = index;
+      updateLightbox();
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+    }
+
+    /* Update lightbox content */
+    function updateLightbox() {
+      const item = visibleItems[currentIndex];
+      if (!item) return;
+      const img     = item.querySelector('img');
+      const caption = item.dataset.caption || item.querySelector('.gallery-caption span')?.textContent || '';
+      lbImg.src       = img ? img.src : '';
+      lbImg.alt       = img ? img.alt : '';
+      lbCaption.textContent = caption;
+      lbCounter.textContent = `${currentIndex + 1} / ${visibleItems.length}`;
+    }
+
+    /* Close lightbox */
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    /* Navigate */
+    function prevImage() {
+      currentIndex = (currentIndex - 1 + visibleItems.length) % visibleItems.length;
+      updateLightbox();
+    }
+
+    function nextImage() {
+      currentIndex = (currentIndex + 1) % visibleItems.length;
+      updateLightbox();
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lbPrev.addEventListener('click', prevImage);
+    lbNext.addEventListener('click', nextImage);
+
+    /* Click on overlay background closes lightbox */
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) closeLightbox();
+    });
+
+    /* Keyboard navigation */
+    document.addEventListener('keydown', (e) => {
+      if (!lightbox.classList.contains('open')) return;
+      if (e.key === 'Escape')      closeLightbox();
+      if (e.key === 'ArrowLeft')   prevImage();
+      if (e.key === 'ArrowRight')  nextImage();
+    });
+
+    /* Wire up gallery items — runs after DOM ready */
+    function wireGalleryItems() {
+      const items = document.querySelectorAll('.gallery-item');
+      items.forEach((item, i) => {
+        item.setAttribute('tabindex', '0');
+        item.setAttribute('role', 'button');
+        item.setAttribute('aria-label', item.dataset.caption || 'View image');
+
+        item.addEventListener('click', () => {
+          const visible = getVisible();
+          const idx = visible.indexOf(item);
+          if (idx !== -1) openLightbox(item, idx);
+        });
+
+        item.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            const visible = getVisible();
+            const idx = visible.indexOf(item);
+            if (idx !== -1) openLightbox(item, idx);
+          }
+        });
+      });
+
+      /* Check empty state on load */
+      const total = items.length;
+      if (emptyState) emptyState.style.display = total === 0 ? '' : 'none';
+    }
+
+    wireGalleryItems();
+
+    /* ── Star canvas ── */
+    const canvas = document.getElementById('star-canvas');
+    if (canvas) {
+      const ctx = canvas.getContext('2d');
+      let stars  = [];
+
+      function resize() {
+        canvas.width  = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+
+      function initStars() {
+        stars = Array.from({ length: 55 }, () => ({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          r: Math.random() * 1.2 + 0.2,
+          o: Math.random() * 0.6 + 0.2,
+          speed: Math.random() * 0.3 + 0.05
+        }));
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        stars.forEach(s => {
+          s.o += s.speed * 0.02;
+          if (s.o > 0.8) s.speed = -Math.abs(s.speed);
+          if (s.o < 0.1) s.speed =  Math.abs(s.speed);
+          ctx.beginPath();
+          ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(180,210,255,${s.o})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      initStars();
+      draw();
+      window.addEventListener('resize', () => { resize(); initStars(); });
+    }
+  </script>
+
+</body>
+</html>
